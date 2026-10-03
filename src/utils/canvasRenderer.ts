@@ -188,12 +188,12 @@ export async function renderTemplateToCanvas(
       ctx.direction = 'ltr';
       ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px "${field.fontFamily}", "Almarai", "Tajawal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
 
-      // Auto-fit: shrink font size only if text significantly exceeds the allotted column width
+      // Auto-fit: only shrink if text exceeds container and available space
       let textWidth = ctx.measureText(text).width;
-      const maxAllowedWidth = Math.max(containerWidth, 230 * scaleFactor);
-      if (textWidth > maxAllowedWidth) {
+      const maxAllowedWidth = Math.max(containerWidth, (field.width / 100) * width, 280 * scaleFactor);
+      if (textWidth > maxAllowedWidth && maxAllowedWidth > 50) {
         const reduction = maxAllowedWidth / textWidth;
-        fontSize = Math.max(8, fontSize * reduction);
+        fontSize = Math.max(10, fontSize * reduction);
         ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px "${field.fontFamily}", "Almarai", "Tajawal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
         textWidth = ctx.measureText(text).width;
       }
