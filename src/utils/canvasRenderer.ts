@@ -127,9 +127,12 @@ export async function renderTemplateToCanvas(
   if (typeof document !== 'undefined' && 'fonts' in document) {
     try {
       await Promise.all([
-        document.fonts.load('400 12px "Almarai"'),
-        document.fonts.load('300 12px "Almarai"'),
-        document.fonts.load('400 12px "Tajawal"'),
+        document.fonts.load('400 14px "Almarai"'),
+        document.fonts.load('700 14px "Almarai"'),
+        document.fonts.load('600 14px "Inter"'),
+        document.fonts.load('700 14px "Inter"'),
+        document.fonts.load('400 14px "Tajawal"'),
+        document.fonts.load('700 14px "Tajawal"'),
         document.fonts.ready,
       ]);
     } catch {
@@ -186,15 +189,15 @@ export async function renderTemplateToCanvas(
       }
 
       ctx.direction = 'ltr';
-      ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px "${field.fontFamily}", "Almarai", "Tajawal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+      ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px "${field.fontFamily}", "Almarai", "Tajawal", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
 
       // Auto-fit: only shrink if text exceeds container and available space
       let textWidth = ctx.measureText(text).width;
-      const maxAllowedWidth = Math.max(containerWidth, (field.width / 100) * width, 280 * scaleFactor);
+      const maxAllowedWidth = Math.max(containerWidth, (field.width / 100) * width, 320 * scaleFactor);
       if (textWidth > maxAllowedWidth && maxAllowedWidth > 50) {
         const reduction = maxAllowedWidth / textWidth;
-        fontSize = Math.max(10, fontSize * reduction);
-        ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px "${field.fontFamily}", "Almarai", "Tajawal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+        fontSize = Math.max(12, fontSize * reduction);
+        ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px "${field.fontFamily}", "Almarai", "Tajawal", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
         textWidth = ctx.measureText(text).width;
       }
 
