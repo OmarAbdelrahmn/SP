@@ -46,14 +46,26 @@ function createFallbackImage(): HTMLImageElement {
   return img;
 }
 
+export function toArabicNumerals(str: string | number | undefined | null): string {
+  if (!str) return '';
+  const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return String(str)
+    .replace(/[0-9]/g, (w) => arabicDigits[+w])
+    .replace(/-/g, '/');
+}
+
 export function resolveFieldValue(field: TemplateField, person: PersonRecord): string {
+  if (field.key === 'photo') {
+    return person.photoUrl || '/templates/sample-person.jpg';
+  }
   if (field.key === 'name') return person.name;
+  if (field.key === 'nameAr') return person.customFields?.nameAr || person.name;
+  if (field.key === 'nameEn') return person.customFields?.nameEn || 'ESLAM HAMADA FOUAD ABDELRAHMAN';
   if (field.key === 'title') return person.title;
   if (field.key === 'date') return person.date;
   if (field.key === 'code') return person.code;
   if (field.key === 'company') return person.company;
   if (field.key === 'email') return person.email;
-  if (field.key === 'photo') return person.photoUrl || '';
   if (field.key === 'qr') {
     // Return encoded verification URL or structured payload
     return `https://verify.cert.io/v/${person.code}?id=${person.id}&name=${encodeURIComponent(person.name)}`;
@@ -61,6 +73,31 @@ export function resolveFieldValue(field: TemplateField, person: PersonRecord): s
   if (person.customFields && person.customFields[field.key]) {
     return person.customFields[field.key];
   }
+
+  // Automatic fallbacks for Arabic card keys
+  if (field.key === 'idNumberEn') return person.customFields?.driverId || person.code || '2579236403';
+  if (field.key === 'idNumberAr') return toArabicNumerals(person.customFields?.driverId || person.code || '2579236403');
+  if (field.key === 'licenseTypeEn') return person.customFields?.licenseTypeEn || 'Light Transport';
+  if (field.key === 'licenseTypeAr') return person.customFields?.licenseTypeAr || 'نقل خفيف';
+  if (field.key === 'issueDateEn') return person.date?.replace(/-/g, '/') || '02/04/2026';
+  if (field.key === 'issueDateAr') return toArabicNumerals(person.date || '2026/04/02');
+  if (field.key === 'dobEn') return person.customFields?.dobEn || '01/12/1999';
+  if (field.key === 'dobAr') return toArabicNumerals(person.customFields?.dobEn || '1999/12/01');
+  if (field.key === 'nationalityEn') return person.customFields?.nationalityEn || 'Egypt';
+  if (field.key === 'nationalityAr') return person.customFields?.nationalityAr || 'مصر';
+  if (field.key === 'expiryDateEn') return person.customFields?.expiryDate?.replace(/-/g, '/') || '06/02/2031';
+  if (field.key === 'expiryDateAr') return toArabicNumerals(person.customFields?.expiryDate || '2031/02/06');
+  if (field.key === 'bloodType') return person.customFields?.bloodType || 'A+';
+
+  // Muqeem fallbacks
+  if (field.key === 'pobAr') return person.customFields?.pobAr || 'مصر';
+  if (field.key === 'religionAr') return person.customFields?.religionAr || 'الاسلام';
+  if (field.key === 'professionAr') return person.customFields?.professionAr || 'سائق شاحنة صغيرة';
+  if (field.key === 'employerIdAr') return toArabicNumerals(person.customFields?.moiNumber || '7037427601');
+  if (field.key === 'issuePlaceAr') return person.customFields?.issuePlaceAr || 'موقع بوابة الوزارة الإلكترونية';
+  if (field.key === 'workPlaceAr') return person.customFields?.cityAr ? `منطقة ${person.customFields.cityAr}` : 'منطقة تبوك';
+  if (field.key === 'employerNameAr') return person.customFields?.companyAr || 'شركة غضى التجارية';
+
   // If field has custom prefix and no data key value
   return field.prefix || '';
 }

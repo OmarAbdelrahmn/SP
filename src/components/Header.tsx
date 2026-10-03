@@ -71,6 +71,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
+      dir="rtl"
       style={{
         height: '64px',
         background: 'var(--bg-surface)',
@@ -81,6 +82,7 @@ export const Header: React.FC<HeaderProps> = ({
         padding: '0 20px',
         gap: '16px',
         zIndex: 50,
+        fontFamily: "'Almarai', 'Tajawal', sans-serif",
       }}
     >
       {/* Brand & Active Template */}
@@ -88,41 +90,40 @@ export const Header: React.FC<HeaderProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div
             style={{
-              width: '36px',
-              height: '36px',
+              width: '38px',
+              height: '38px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
-              boxShadow: '0 2px 10px rgba(99, 102, 241, 0.4)',
+              boxShadow: '0 2px 10px rgba(16, 185, 129, 0.4)',
             }}
           >
             <Sparkles size={20} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontWeight: 700, fontSize: '0.95rem', letterSpacing: '-0.3px' }}>
-                CertiCraft
+              <span style={{ fontWeight: 800, fontSize: '1rem', letterSpacing: '-0.3px', color: '#f8fafc' }}>
+                منظومة البطاقات والرخص
               </span>
               <span
                 style={{
-                  fontSize: '0.65rem',
-                  padding: '2px 6px',
-                  background: 'rgba(99, 102, 241, 0.15)',
-                  color: 'var(--accent-primary)',
+                  fontSize: '0.68rem',
+                  padding: '2px 8px',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  color: '#10b981',
                   borderRadius: '4px',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  border: '1px solid rgba(99, 102, 241, 0.3)',
+                  fontWeight: 700,
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
                 }}
               >
-                Template Engine
+                نظام فوري
               </span>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-              Card & Template Automation Studio
+              إصدار وطباعة رخص القيادة وهوية مقيم وبطاقات النقل
             </div>
           </div>
         </div>
@@ -133,64 +134,64 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           className="btn btn-secondary btn-sm"
           onClick={onOpenTemplateSelector}
-          title="Switch or Upload Template"
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', maxWidth: '280px' }}
+          title="تغيير أو اختيار نموذج آخر"
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', maxWidth: '300px' }}
         >
-          <Layers size={15} style={{ color: 'var(--accent-primary)' }} />
+          <Layers size={15} style={{ color: '#10b981' }} />
           <span
             style={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
-              fontWeight: 600,
+              fontWeight: 700,
             }}
           >
             {activeTemplate.name}
           </span>
           <span
             style={{
-              fontSize: '0.65rem',
+              fontSize: '0.68rem',
               color: 'var(--text-muted)',
-              background: 'rgba(255,255,255,0.06)',
-              padding: '2px 5px',
-              borderRadius: '3px',
-              textTransform: 'uppercase',
+              background: 'rgba(255,255,255,0.08)',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              fontWeight: 600,
             }}
           >
-            Change
+            تغيير
           </span>
         </button>
       </div>
 
-      {/* Center Controls: The 3 Main Workflow Modes */}
+      {/* Center Controls: Main Workflow Tabs */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <div className="tabs-container">
           <button
             className={`tab-btn ${activeTab === 'form' ? 'active' : ''}`}
             onClick={() => onTabChange('form')}
           >
-            <CreditCard size={14} />
-            <span>Form Fill & Download</span>
+            <CreditCard size={15} />
+            <span>تعبئة فورية وتحميل</span>
           </button>
 
           <button
             className={`tab-btn ${activeTab === 'sheet' ? 'active' : ''}`}
             onClick={() => onTabChange('sheet')}
           >
-            <FileSpreadsheet size={14} />
-            <span>Excel / Sheet Batch</span>
+            <FileSpreadsheet size={15} />
+            <span>جدول الدفعة (Excel)</span>
           </button>
 
           <button
             className={`tab-btn ${activeTab === 'designer' ? 'active' : ''}`}
             onClick={() => onTabChange('designer')}
           >
-            <Layers size={14} />
-            <span>Visual Designer</span>
+            <Layers size={15} />
+            <span>المحرر البصري</span>
           </button>
         </div>
 
-        {/* Live Person Preview Switcher (when not in full sheet mode) */}
+        {/* Live Person Preview Switcher */}
         {people.length > 0 && activeTab !== 'sheet' && (
           <div
             style={{
@@ -206,9 +207,9 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               className="btn btn-ghost btn-icon btn-sm"
               onClick={handlePrevPerson}
-              title="Previous person"
+              title="الشخص السابق"
             >
-              <ChevronLeft size={14} />
+              <ChevronRight size={14} />
             </button>
 
             <select
@@ -218,11 +219,12 @@ export const Header: React.FC<HeaderProps> = ({
                 background: 'transparent',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '0.8rem',
-                fontWeight: 600,
+                fontSize: '0.82rem',
+                fontWeight: 700,
                 outline: 'none',
                 cursor: 'pointer',
-                maxWidth: '180px',
+                maxWidth: '190px',
+                fontFamily: 'inherit',
               }}
             >
               {people.map((p, idx) => (
@@ -235,15 +237,15 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               className="btn btn-ghost btn-icon btn-sm"
               onClick={handleNextPerson}
-              title="Next person"
+              title="الشخص التالي"
             >
-              <ChevronRight size={14} />
+              <ChevronLeft size={14} />
             </button>
           </div>
         )}
       </div>
 
-      {/* Right Controls: Zoom & Quick Export */}
+      {/* Right Controls: Zoom, Single & Batch Export */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {activeTab === 'designer' && (
           <div
@@ -259,7 +261,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               className="btn btn-ghost btn-icon btn-sm"
               onClick={() => onZoomChange(Math.max(0.3, zoomLevel - 0.1))}
-              title="Zoom Out"
+              title="تصغير"
             >
               <ZoomOut size={14} />
             </button>
@@ -268,7 +270,7 @@ export const Header: React.FC<HeaderProps> = ({
                 fontSize: '0.75rem',
                 minWidth: '40px',
                 textAlign: 'center',
-                fontWeight: 500,
+                fontWeight: 600,
                 color: 'var(--text-secondary)',
               }}
             >
@@ -277,14 +279,14 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               className="btn btn-ghost btn-icon btn-sm"
               onClick={() => onZoomChange(Math.min(2.0, zoomLevel + 0.1))}
-              title="Zoom In"
+              title="تكبير"
             >
               <ZoomIn size={14} />
             </button>
             <button
               className="btn btn-ghost btn-icon btn-sm"
               onClick={() => onZoomChange(0.85)}
-              title="Reset Zoom"
+              title="إعادة ضبط الحجم"
             >
               <Maximize2 size={13} />
             </button>
@@ -294,19 +296,19 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           className="btn btn-secondary btn-sm"
           onClick={onDownloadSingle}
-          title="Download active card as image"
+          title="تحميل البطاقة المعروضة حالياً كصورة عالية الدقة"
         >
           <Download size={14} />
-          <span>Save Card</span>
+          <span>تحميل البطاقة</span>
         </button>
 
         <button
           className="btn btn-primary btn-sm"
           onClick={onOpenBatchExport}
-          title="Export all selected records as a ZIP file"
+          title="تصدير جميع السجلات المحددة في ملف ZIP واحد"
         >
           <Archive size={14} />
-          <span>Export All ({selectedCount})</span>
+          <span>تصدير الكل ({selectedCount})</span>
         </button>
 
         {typeof sessionRemainingSeconds === 'number' && (
@@ -321,12 +323,12 @@ export const Header: React.FC<HeaderProps> = ({
               border: sessionRemainingSeconds < 120 ? '1px solid rgba(239, 68, 68, 0.35)' : '1px solid var(--border-subtle)',
               fontSize: '0.78rem',
               color: sessionRemainingSeconds < 120 ? '#fca5a5' : 'var(--text-secondary)',
-              marginLeft: '4px',
+              marginRight: '4px',
             }}
-            title="Session automatically expires every 15 minutes"
+            title="جلسة آمنة: تنتهي الصلاحية تلقائياً كل 15 دقيقة"
           >
-            <Clock size={13} style={{ color: sessionRemainingSeconds < 120 ? '#ef4444' : 'var(--accent-primary)' }} />
-            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+            <Clock size={13} style={{ color: sessionRemainingSeconds < 120 ? '#ef4444' : '#10b981' }} />
+            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
               {Math.floor(sessionRemainingSeconds / 60)}:
               {String(sessionRemainingSeconds % 60).padStart(2, '0')}
             </span>
@@ -334,8 +336,8 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 onClick={onLockSession}
                 className="btn btn-ghost btn-icon btn-sm"
-                title="Lock Workspace Now"
-                style={{ marginLeft: '4px', width: '22px', height: '22px', padding: 0 }}
+                title="قفل المنظومة الآن"
+                style={{ marginRight: '4px', width: '22px', height: '22px', padding: 0 }}
               >
                 <Lock size={12} />
               </button>

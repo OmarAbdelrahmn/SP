@@ -35,14 +35,14 @@ export const ImportCsvModal: React.FC<ImportCsvModalProps> = ({
     try {
       const result = parseCsvText(text);
       if (result.records.length === 0) {
-        setErrorMessage('No valid rows detected. Make sure each person is on a new line.');
+        setErrorMessage('لم يتم العثور على صفوف صالحة. تأكد من أن كل شخص في سطر جديد.');
         setParsedPreview([]);
       } else {
         setErrorMessage(null);
         setParsedPreview(result.records);
       }
     } catch (err: any) {
-      setErrorMessage(err.message || 'Failed to parse CSV format');
+      setErrorMessage(err.message || 'فشل في قراءة تنسيق CSV');
     }
   };
 
@@ -65,10 +65,10 @@ export const ImportCsvModal: React.FC<ImportCsvModalProps> = ({
   };
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop" onClick={onClose} dir="rtl">
       <div
         className="modal-content"
-        style={{ maxWidth: '800px' }}
+        style={{ maxWidth: '800px', fontFamily: "'Almarai', 'Tajawal', sans-serif" }}
         onClick={(e) => e.stopPropagation()}
       >
         <div
@@ -83,82 +83,107 @@ export const ImportCsvModal: React.FC<ImportCsvModalProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
               style={{
-                width: '32px',
-                height: '32px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '8px',
-                background: 'rgba(99, 102, 241, 0.15)',
+                background: 'rgba(16, 185, 129, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--accent-primary)',
+                color: '#10b981',
               }}
             >
               <FileSpreadsheet size={18} />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Import People Dataset</h2>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                Paste tabular data or upload a CSV / TSV file
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: '#f8fafc' }}>
+                استيراد سجلات الأشخاص (CSV)
+              </h2>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0, marginTop: '2px' }}>
+                ارفع ملف جدول بيانات أو الصق نصوص CSV لإدراج دفعة أسماء وبيانات جديدة
               </p>
             </div>
           </div>
-          <button className="btn btn-ghost btn-icon" onClick={onClose}>
+          <button className="btn btn-ghost btn-icon" onClick={onClose} title="إغلاق">
             <X size={18} />
           </button>
         </div>
 
         <div style={{ padding: '24px', overflowY: 'auto', maxHeight: 'calc(90vh - 140px)' }}>
-          {/* File drop or paste input */}
-          <div style={{ marginBottom: '16px' }}>
-            <div
+          {/* File Upload Zone */}
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            style={{
+              border: '2px dashed var(--border-accent)',
+              borderRadius: 'var(--radius-md)',
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              cursor: 'pointer',
+              background: 'rgba(16, 185, 129, 0.03)',
+              marginBottom: '20px',
+            }}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv, .tsv, .txt"
+              style={{ display: 'none' }}
+              onChange={handleFileUpload}
+            />
+            <Upload size={24} style={{ color: '#10b981' }} />
+            <div style={{ textAlign: 'center' }}>
+              <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>
+                اضغط لاختيار ملف CSV أو أسقطه هنا
+              </span>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                يدعم ملفات CSV الصادرة من Microsoft Excel أو Google Sheets
+              </div>
+            </div>
+          </div>
+
+          {/* Paste Raw Text Box */}
+          <div style={{ marginBottom: '20px' }}>
+            <label
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '8px',
+                display: 'block',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                color: 'var(--text-secondary)',
+                marginBottom: '6px',
               }}
             >
-              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
-                Paste CSV or Spreadsheet Data
-              </label>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Upload size={14} /> Upload File (.csv)
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".csv, .tsv, .txt"
-                style={{ display: 'none' }}
-                onChange={handleFileUpload}
-              />
-            </div>
-
+              أو الصق محتوى الجدول هنا مباشرة:
+            </label>
             <textarea
               className="textarea"
-              rows={5}
-              placeholder="Full Name, Role / Title, Organization, Date, ID Code&#10;Dr. Alexander Vance, Chief Scientist, Nova Labs, 2026-10-20, CERT-101&#10;Evelyn Sterling, Principal Architect, Apex Core, 2026-10-20, CERT-102"
+              rows={4}
               value={csvRawText}
               onChange={(e) => handleTextChange(e.target.value)}
-              style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}
+              placeholder="مثال:
+الاسم, رقم الهوية, المنشأة, تاريخ الإصدار
+اسلام حماده فؤاد, 2579236403, شركة غضى, 2026/04/02"
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', textAlign: 'right' }}
             />
           </div>
 
+          {/* Error Banner */}
           {errorMessage && (
             <div
               style={{
+                background: 'rgba(239, 68, 68, 0.12)',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '10px 14px',
+                color: '#fca5a5',
+                fontSize: '0.82rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '10px 14px',
-                borderRadius: 'var(--radius-sm)',
-                background: 'rgba(239, 68, 68, 0.1)',
-                border: '1px solid rgba(239, 68, 68, 0.25)',
-                color: '#ef4444',
-                fontSize: '0.8rem',
-                marginBottom: '16px',
+                marginBottom: '20px',
               }}
             >
               <AlertCircle size={16} />
@@ -166,58 +191,55 @@ export const ImportCsvModal: React.FC<ImportCsvModalProps> = ({
             </div>
           )}
 
-          {/* Parsed Preview Table */}
+          {/* Preview of Parsed Records */}
           {parsedPreview.length > 0 && (
-            <div>
+            <div style={{ marginBottom: '20px' }}>
               <div
                 style={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
+                  justifyContent: 'space-between',
                   marginBottom: '10px',
                 }}
               >
-                <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                  Preview: {parsedPreview.length} People Detected
-                </div>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>
+                  معاينة السجلات ({parsedPreview.length} سجل جاهز للاستيراد)
+                </span>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', cursor: 'pointer' }}>
                   <input
                     type="checkbox"
                     checked={replaceExisting}
                     onChange={(e) => setReplaceExisting(e.target.checked)}
                   />
-                  <span>Replace existing people list</span>
+                  <span>استبدال السجلات الحالية بالكامل</span>
                 </label>
               </div>
 
               <div
                 style={{
+                  maxHeight: '180px',
+                  overflowY: 'auto',
                   border: '1px solid var(--border-subtle)',
                   borderRadius: 'var(--radius-sm)',
-                  maxHeight: '220px',
-                  overflowY: 'auto',
+                  background: 'rgba(0,0,0,0.2)',
                 }}
               >
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
                   <thead>
-                    <tr style={{ background: 'rgba(0,0,0,0.3)', color: 'var(--text-muted)' }}>
-                      <th style={{ padding: '8px 10px', textAlign: 'left' }}>#</th>
-                      <th style={{ padding: '8px 10px', textAlign: 'left' }}>Name</th>
-                      <th style={{ padding: '8px 10px', textAlign: 'left' }}>Title</th>
-                      <th style={{ padding: '8px 10px', textAlign: 'left' }}>Company</th>
-                      <th style={{ padding: '8px 10px', textAlign: 'left' }}>Date</th>
-                      <th style={{ padding: '8px 10px', textAlign: 'left' }}>ID Code</th>
+                    <tr style={{ borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}>
+                      <th style={{ padding: '8px 12px', textAlign: 'right' }}>#</th>
+                      <th style={{ padding: '8px 12px', textAlign: 'right' }}>الاسم</th>
+                      <th style={{ padding: '8px 12px', textAlign: 'right' }}>الكود / الهوية</th>
+                      <th style={{ padding: '8px 12px', textAlign: 'right' }}>المنشأة</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {parsedPreview.map((item, i) => (
-                      <tr key={i} style={{ borderTop: '1px solid var(--border-subtle)' }}>
-                        <td style={{ padding: '6px 10px', color: 'var(--text-muted)' }}>{i + 1}</td>
-                        <td style={{ padding: '6px 10px', fontWeight: 600 }}>{item.name}</td>
-                        <td style={{ padding: '6px 10px', color: 'var(--text-secondary)' }}>{item.title}</td>
-                        <td style={{ padding: '6px 10px', color: 'var(--text-secondary)' }}>{item.company}</td>
-                        <td style={{ padding: '6px 10px' }}>{item.date}</td>
-                        <td style={{ padding: '6px 10px', fontFamily: 'var(--font-mono)' }}>{item.code}</td>
+                    {parsedPreview.slice(0, 10).map((p, idx) => (
+                      <tr key={idx} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                        <td style={{ padding: '6px 12px', color: 'var(--text-muted)' }}>{idx + 1}</td>
+                        <td style={{ padding: '6px 12px', fontWeight: 600 }}>{p.name}</td>
+                        <td style={{ padding: '6px 12px', fontFamily: 'var(--font-mono)' }}>{p.code}</td>
+                        <td style={{ padding: '6px 12px', color: 'var(--text-secondary)' }}>{p.company}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -225,28 +247,22 @@ export const ImportCsvModal: React.FC<ImportCsvModalProps> = ({
               </div>
             </div>
           )}
-        </div>
 
-        <div
-          style={{
-            padding: '16px 24px',
-            borderTop: '1px solid var(--border-subtle)',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            gap: '10px',
-            background: 'var(--bg-surface-elevated)',
-          }}
-        >
-          <button className="btn btn-ghost" onClick={onClose}>
-            Cancel
-          </button>
-          <button
-            className="btn btn-primary"
-            disabled={parsedPreview.length === 0}
-            onClick={handleConfirmImport}
-          >
-            <Check size={16} /> Import {parsedPreview.length} People
-          </button>
+          {/* Action buttons */}
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-start' }}>
+            <button
+              className="btn btn-primary"
+              disabled={parsedPreview.length === 0}
+              onClick={handleConfirmImport}
+              style={{ fontWeight: 700 }}
+            >
+              <Check size={16} />
+              <span>تأكيد استيراد ({parsedPreview.length}) سجل</span>
+            </button>
+            <button className="btn btn-ghost" onClick={onClose}>
+              إلغاء
+            </button>
+          </div>
         </div>
       </div>
     </div>

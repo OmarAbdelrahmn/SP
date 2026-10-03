@@ -31,24 +31,20 @@ interface FieldInspectorProps {
 }
 
 const FONT_OPTIONS = [
-  { label: 'Playfair Display (Serif Elegance)', value: 'Playfair Display' },
-  { label: 'Cinzel (Classical Ornate Serif)', value: 'Cinzel' },
-  { label: 'Montserrat (Modern Bold Sans)', value: 'Montserrat' },
-  { label: 'Inter (Clean Technical Sans)', value: 'Inter' },
-  { label: 'Outfit (Geometric Contemporary)', value: 'Outfit' },
-  { label: 'Great Vibes (Calligraphy Script)', value: 'Great Vibes' },
-  { label: 'JetBrains Mono (Monospace Tech)', value: 'JetBrains Mono' },
+  { label: 'المراعي (Almarai - خط رسمي ومعتمد)', value: 'Almarai' },
+  { label: 'تجوال (Tajawal - حديث وعصري)', value: 'Tajawal' },
+  { label: 'Cairo (القاهرة - واضح وجريء)', value: 'Cairo' },
+  { label: 'Inter (خط إنجليزي تقني دقيق)', value: 'Inter' },
+  { label: 'Montserrat (عصري بارز)', value: 'Montserrat' },
 ];
 
 const COLOR_PRESETS = [
-  { name: 'Pure White', hex: '#ffffff' },
-  { name: 'Obsidian Black', hex: '#0f172a' },
-  { name: 'Prestige Gold', hex: '#d97706' },
-  { name: 'Royal Navy', hex: '#1e3a8a' },
-  { name: 'Emerald Green', hex: '#047857' },
-  { name: 'Cyber Violet', hex: '#9333ea' },
-  { name: 'Crimson', hex: '#dc2626' },
-  { name: 'Silver Slate', hex: '#64748b' },
+  { name: 'أسود داكن', hex: '#111827' },
+  { name: 'رمادي رسمي', hex: '#33373b' },
+  { name: 'أخضر سعودي', hex: '#059669' },
+  { name: 'ذهبي رسمي', hex: '#d97706' },
+  { name: 'أزرق داكن', hex: '#1e3a8a' },
+  { name: 'أبيض ناصع', hex: '#ffffff' },
 ];
 
 export const FieldInspector: React.FC<FieldInspectorProps> = ({
@@ -64,14 +60,16 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
 
   return (
     <div
+      dir="rtl"
       style={{
         width: '360px',
         background: 'var(--bg-surface)',
-        borderLeft: '1px solid var(--border-subtle)',
+        borderRight: '1px solid var(--border-subtle)',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
         overflow: 'hidden',
+        fontFamily: "'Almarai', 'Tajawal', sans-serif",
       }}
     >
       {/* Top Header: Field Layers & Add Field */}
@@ -85,8 +83,8 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Layers size={16} style={{ color: 'var(--accent-primary)' }} />
-          <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Data Fields & Layout</span>
+          <Layers size={16} style={{ color: '#10b981' }} />
+          <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>حقول البيانات والتخطيط</span>
         </div>
 
         {/* Add Field Dropdown */}
@@ -94,23 +92,23 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
           <button
             className="btn btn-secondary btn-sm"
             onClick={() => onAddField('text')}
-            title="Add Text Field"
+            title="إضافة حقل نص"
           >
             <Type size={13} />
-            <span>+ Text</span>
+            <span>+ نص</span>
           </button>
           <button
             className="btn btn-secondary btn-sm"
             onClick={() => onAddField('image')}
-            title="Add Photo / Avatar"
+            title="إضافة صورة شخصية"
           >
             <ImageIcon size={13} />
-            <span>+ Photo</span>
+            <span>+ صورة</span>
           </button>
           <button
             className="btn btn-secondary btn-sm"
             onClick={() => onAddField('qr')}
-            title="Add QR Code"
+            title="إضافة رمز QR"
           >
             <QrCode size={13} />
             <span>+ QR</span>
@@ -141,18 +139,19 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                 fontSize: '0.75rem',
                 borderRadius: 'var(--radius-sm)',
                 border: isSel
-                  ? '1px solid var(--accent-primary)'
+                  ? '1px solid #10b981'
                   : '1px solid var(--border-subtle)',
                 background: isSel
-                  ? 'rgba(99, 102, 241, 0.15)'
+                  ? 'rgba(16, 185, 129, 0.15)'
                   : 'var(--bg-surface-elevated)',
                 color: isSel ? '#ffffff' : 'var(--text-secondary)',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                fontWeight: isSel ? 600 : 400,
+                fontWeight: isSel ? 700 : 500,
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
+                fontFamily: 'inherit',
               }}
             >
               {f.type === 'text' && <Type size={12} />}
@@ -179,23 +178,23 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
               }}
             >
               <div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>{selectedField.name}</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700 }}>{selectedField.name}</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                  Type: {selectedField.type.toUpperCase()}
+                  النوع: {selectedField.type === 'text' ? 'نص' : selectedField.type === 'image' ? 'صورة' : 'رمز استجابة QR'}
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '6px' }}>
                 <button
                   className="btn btn-ghost btn-icon btn-sm"
                   onClick={() => onDuplicateField(selectedField.id)}
-                  title="Duplicate Field"
+                  title="تكرار الحقل"
                 >
                   <Copy size={14} />
                 </button>
                 <button
                   className="btn btn-danger-ghost btn-icon btn-sm"
                   onClick={() => onDeleteField(selectedField.id)}
-                  title="Delete Field"
+                  title="حذف الحقل"
                 >
                   <Trash2 size={14} />
                 </button>
@@ -208,29 +207,45 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                 style={{
                   display: 'block',
                   fontSize: '0.75rem',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
+                  fontWeight: 700,
                   color: 'var(--text-secondary)',
                   marginBottom: '6px',
                 }}
               >
-                Data Binding Property
+                ربط مصدر البيانات (Data Binding)
               </label>
               <select
                 className="select"
                 value={selectedField.key}
                 onChange={(e) => onUpdateField(selectedField.id, { key: e.target.value })}
+                style={{ fontFamily: 'inherit' }}
               >
-                <option value="name">Recipient Full Name (name)</option>
-                <option value="title">Role / Award Title (title)</option>
-                <option value="date">Issue Date (date)</option>
-                <option value="code">ID / Certificate Code (code)</option>
-                <option value="company">Organization / Company (company)</option>
-                <option value="email">Email Address (email)</option>
-                <option value="photo">Profile Photo / Avatar (photo)</option>
-                <option value="qr">QR Code Verification (qr)</option>
-                <option value="custom:static">Static Text / Badge Label</option>
+                <option value="name">الاسم الأساسي (name)</option>
+                <option value="nameAr">الاسم بالعربية (nameAr)</option>
+                <option value="nameEn">الاسم بالإنجليزية (nameEn)</option>
+                <option value="idNumberAr">رقم الهوية بالعربية (idNumberAr)</option>
+                <option value="idNumberEn">رقم الهوية بالإنجليزية (idNumberEn)</option>
+                <option value="licenseTypeAr">نوع الرخصة بالعربية (licenseTypeAr)</option>
+                <option value="licenseTypeEn">نوع الرخصة بالإنجليزية (licenseTypeEn)</option>
+                <option value="issueDateAr">تاريخ الإصدار بالعربية (issueDateAr)</option>
+                <option value="issueDateEn">تاريخ الإصدار بالإنجليزية (issueDateEn)</option>
+                <option value="dobAr">تاريخ الميلاد بالعربية (dobAr)</option>
+                <option value="dobEn">تاريخ الميلاد بالإنجليزية (dobEn)</option>
+                <option value="nationalityAr">الجنسية بالعربية (nationalityAr)</option>
+                <option value="nationalityEn">الجنسية بالإنجليزية (nationalityEn)</option>
+                <option value="expiryDateAr">تاريخ الانتهاء بالعربية (expiryDateAr)</option>
+                <option value="expiryDateEn">تاريخ الانتهاء بالإنجليزية (expiryDateEn)</option>
+                <option value="bloodType">فصيلة الدم (bloodType)</option>
+                <option value="photo">الصورة الشخصية (photo)</option>
+                <option value="professionAr">المهنة (professionAr)</option>
+                <option value="employerIdAr">هوية صاحب العمل (employerIdAr)</option>
+                <option value="employerNameAr">اسم صاحب العمل (employerNameAr)</option>
+                <option value="workPlaceAr">مكان العمل (workPlaceAr)</option>
+                <option value="issuePlaceAr">مكان الإصدار (issuePlaceAr)</option>
+                <option value="pobAr">مكان الميلاد (pobAr)</option>
+                <option value="religionAr">الديانة (religionAr)</option>
+                <option value="code">الكود / رقم البطاقة (code)</option>
+                <option value="qr">رمز التحقق السريع (qr)</option>
               </select>
             </div>
 
@@ -240,13 +255,11 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                 <div
                   style={{
                     fontSize: '0.75rem',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
+                    fontWeight: 700,
                     color: 'var(--text-secondary)',
                   }}
                 >
-                  Typography & Font
+                  الخط والتنسيق
                 </div>
 
                 {/* Font Family */}
@@ -255,6 +268,7 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                     className="select"
                     value={selectedField.fontFamily}
                     onChange={(e) => onUpdateField(selectedField.id, { fontFamily: e.target.value })}
+                    style={{ fontFamily: 'inherit' }}
                   >
                     {FONT_OPTIONS.map((f) => (
                       <option key={f.value} value={f.value}>
@@ -264,7 +278,7 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                   </select>
                 </div>
 
-                {/* Font Size Slider & Number */}
+                {/* Font Size Slider */}
                 <div>
                   <div
                     style={{
@@ -275,19 +289,19 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                       marginBottom: '6px',
                     }}
                   >
-                    <span>Font Size</span>
+                    <span>حجم الخط</span>
                     <span>{selectedField.fontSize} px</span>
                   </div>
                   <input
                     type="range"
-                    min="10"
-                    max="100"
-                    step="1"
+                    min="8"
+                    max="60"
+                    step="0.5"
                     value={selectedField.fontSize}
                     onChange={(e) =>
                       onUpdateField(selectedField.id, { fontSize: Number(e.target.value) })
                     }
-                    style={{ width: '100%', accentColor: 'var(--accent-primary)' }}
+                    style={{ width: '100%', accentColor: '#10b981' }}
                   />
                 </div>
 
@@ -300,12 +314,13 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                       onChange={(e) =>
                         onUpdateField(selectedField.id, { fontWeight: e.target.value as any })
                       }
+                      style={{ fontFamily: 'inherit' }}
                     >
-                      <option value="400">Regular (400)</option>
-                      <option value="500">Medium (500)</option>
-                      <option value="600">SemiBold (600)</option>
-                      <option value="700">Bold (700)</option>
-                      <option value="800">ExtraBold (800)</option>
+                      <option value="400">عادي (Regular 400)</option>
+                      <option value="500">متوسط (Medium 500)</option>
+                      <option value="600">نصف عريض (SemiBold 600)</option>
+                      <option value="700">عريض (Bold 700)</option>
+                      <option value="800">عريض جداً (ExtraBold 800)</option>
                     </select>
                   </div>
 
@@ -318,7 +333,7 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                         fontStyle: selectedField.fontStyle === 'italic' ? 'normal' : 'italic',
                       })
                     }
-                    title="Italic"
+                    title="مائل"
                   >
                     <Italic size={14} />
                   </button>
@@ -333,7 +348,7 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                           selectedField.textTransform === 'uppercase' ? 'none' : 'uppercase',
                       })
                     }
-                    title="Uppercase"
+                    title="أحرف كبيرة (Uppercase)"
                   >
                     <span style={{ fontSize: '0.75rem', fontWeight: 700 }}>AA</span>
                   </button>
@@ -341,7 +356,7 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
 
                 {/* Alignment */}
                 <div style={{ display: 'flex', gap: '6px' }}>
-                  {(['left', 'center', 'right'] as const).map((align) => (
+                  {(['right', 'center', 'left'] as const).map((align) => (
                     <button
                       key={align}
                       className={`btn btn-secondary btn-sm ${
@@ -350,15 +365,15 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                       style={{ flex: 1 }}
                       onClick={() => onUpdateField(selectedField.id, { textAlign: align })}
                     >
-                      {align === 'left' && <AlignLeft size={14} />}
-                      {align === 'center' && <AlignCenter size={14} />}
                       {align === 'right' && <AlignRight size={14} />}
-                      <span style={{ textTransform: 'capitalize' }}>{align}</span>
+                      {align === 'center' && <AlignCenter size={14} />}
+                      {align === 'left' && <AlignLeft size={14} />}
+                      <span>{align === 'right' ? 'يمين' : align === 'center' ? 'وسط' : 'يسار'}</span>
                     </button>
                   ))}
                 </div>
 
-                {/* Color Swatches & Picker */}
+                {/* Color Picker */}
                 <div>
                   <div
                     style={{
@@ -367,7 +382,7 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                       marginBottom: '6px',
                     }}
                   >
-                    Text Color
+                    لون النص
                   </div>
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     <input
@@ -388,22 +403,22 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                       className="input"
                       value={selectedField.color}
                       onChange={(e) => onUpdateField(selectedField.id, { color: e.target.value })}
-                      style={{ width: '100px' }}
+                      style={{ width: '100px', textAlign: 'center', fontFamily: 'var(--font-mono)' }}
                     />
                     <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', flex: 1 }}>
-                      {COLOR_PRESETS.slice(0, 4).map((p) => (
+                      {COLOR_PRESETS.map((p) => (
                         <div
                           key={p.hex}
                           onClick={() => onUpdateField(selectedField.id, { color: p.hex })}
                           style={{
-                            width: '20px',
-                            height: '20px',
+                            width: '22px',
+                            height: '22px',
                             borderRadius: '4px',
                             backgroundColor: p.hex,
                             cursor: 'pointer',
                             border:
                               selectedField.color.toLowerCase() === p.hex.toLowerCase()
-                                ? '2px solid #6366f1'
+                                ? '2px solid #10b981'
                                 : '1px solid rgba(255,255,255,0.2)',
                           }}
                           title={p.name}
@@ -413,7 +428,7 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                   </div>
                 </div>
 
-                {/* Prefix / Static Text */}
+                {/* Prefix */}
                 <div>
                   <label
                     style={{
@@ -423,194 +438,74 @@ export const FieldInspector: React.FC<FieldInspectorProps> = ({
                       marginBottom: '4px',
                     }}
                   >
-                    Prefix or Static Text
+                    بادئة أو نص ثابت يسبق القيمة
                   </label>
                   <input
                     type="text"
                     className="input"
                     value={selectedField.prefix || ''}
                     onChange={(e) => onUpdateField(selectedField.id, { prefix: e.target.value })}
-                    placeholder="e.g. 'Date: ' or 'CERT-ID: '"
+                    placeholder="مثال: 'بطاقة رقم '"
                   />
                 </div>
               </div>
             )}
 
-            {/* Photo / Avatar Specific Settings */}
-            {selectedField.type === 'image' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <div
-                  style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    color: 'var(--text-secondary)',
-                  }}
-                >
-                  Photo Shape & Border
-                </div>
-
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  {(['circle', 'rounded', 'rect'] as const).map((shape) => (
-                    <button
-                      key={shape}
-                      className={`btn btn-secondary btn-sm ${
-                        selectedField.imageShape === shape ? 'btn-primary' : ''
-                      }`}
-                      style={{ flex: 1, textTransform: 'capitalize' }}
-                      onClick={() => onUpdateField(selectedField.id, { imageShape: shape })}
-                    >
-                      {shape}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Border controls */}
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                      Border Width
-                    </div>
-                    <input
-                      type="number"
-                      className="input"
-                      min="0"
-                      max="10"
-                      value={selectedField.borderWidth || 0}
-                      onChange={(e) =>
-                        onUpdateField(selectedField.id, { borderWidth: Number(e.target.value) })
-                      }
-                    />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                      Border Color
-                    </div>
-                    <input
-                      type="color"
-                      value={selectedField.borderColor || '#a855f7'}
-                      onChange={(e) =>
-                        onUpdateField(selectedField.id, { borderColor: e.target.value })
-                      }
-                      style={{
-                        width: '100%',
-                        height: '36px',
-                        borderRadius: 'var(--radius-sm)',
-                        border: '1px solid var(--border-subtle)',
-                        cursor: 'pointer',
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Position & Dimensions */}
-            <div
-              style={{
-                borderTop: '1px solid var(--border-subtle)',
-                paddingTop: '16px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-              }}
-            >
+            {/* Position & Size */}
+            <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
               <div
                 style={{
                   fontSize: '0.75rem',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
+                  fontWeight: 700,
                   color: 'var(--text-secondary)',
+                  marginBottom: '10px',
                 }}
               >
-                Coordinates & Boundary (%)
+                الموضع والأبعاد على القالب (نسبة مئوية %)
               </div>
-
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                 <div>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>X (Center %)</span>
+                  <label style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '3px' }}>
+                    الموضع الأفقي X (%)
+                  </label>
                   <input
                     type="number"
+                    step="0.1"
                     className="input"
-                    step="0.5"
-                    min="0"
-                    max="100"
-                    value={Math.round(selectedField.x * 10) / 10}
-                    onChange={(e) =>
-                      onUpdateField(selectedField.id, { x: Number(e.target.value) })
-                    }
+                    value={selectedField.x}
+                    onChange={(e) => onUpdateField(selectedField.id, { x: Number(e.target.value) })}
                   />
                 </div>
                 <div>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Y (Center %)</span>
+                  <label style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '3px' }}>
+                    الموضع الرأسي Y (%)
+                  </label>
                   <input
                     type="number"
+                    step="0.1"
                     className="input"
-                    step="0.5"
-                    min="0"
-                    max="100"
-                    value={Math.round(selectedField.y * 10) / 10}
-                    onChange={(e) =>
-                      onUpdateField(selectedField.id, { y: Number(e.target.value) })
-                    }
+                    value={selectedField.y}
+                    onChange={(e) => onUpdateField(selectedField.id, { y: Number(e.target.value) })}
                   />
                 </div>
               </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                <div>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Width (%)</span>
-                  <input
-                    type="number"
-                    className="input"
-                    step="1"
-                    min="5"
-                    max="100"
-                    value={Math.round(selectedField.width)}
-                    onChange={(e) =>
-                      onUpdateField(selectedField.id, { width: Number(e.target.value) })
-                    }
-                  />
-                </div>
-                <div>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Height (%)</span>
-                  <input
-                    type="number"
-                    className="input"
-                    step="1"
-                    min="5"
-                    max="100"
-                    value={Math.round(selectedField.height || selectedField.width)}
-                    onChange={(e) =>
-                      onUpdateField(selectedField.id, { height: Number(e.target.value) })
-                    }
-                  />
-                </div>
+              <div style={{ marginTop: '10px' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '3px' }}>
+                  عرض الحقل / المنطقة (%)
+                </label>
+                <input
+                  type="number"
+                  step="0.5"
+                  className="input"
+                  value={selectedField.width}
+                  onChange={(e) => onUpdateField(selectedField.id, { width: Number(e.target.value) })}
+                />
               </div>
             </div>
           </div>
         ) : (
-          <div
-            style={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textAlign: 'center',
-              color: 'var(--text-muted)',
-              padding: '20px',
-            }}
-          >
-            <Move size={32} style={{ marginBottom: '12px', opacity: 0.5 }} />
-            <div style={{ fontWeight: 600, fontSize: '0.9rem', marginBottom: '6px', color: 'var(--text-secondary)' }}>
-              No Field Selected
-            </div>
-            <p style={{ fontSize: '0.8rem', lineHeight: 1.4 }}>
-              Click on any field on the canvas or select from the field chips above to adjust its font, color, position, and data binding.
-            </p>
+          <div style={{ textAlign: 'center', padding: '40px 10px', color: 'var(--text-muted)' }}>
+            اختر أي حقل من القائمة لتعديل خصائصه وموضعه.
           </div>
         )}
       </div>

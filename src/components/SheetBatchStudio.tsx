@@ -86,15 +86,16 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
         setIsSuccessMessage(true);
         setTimeout(() => setIsSuccessMessage(false), 4000);
       } else {
-        alert('No valid records found in the sheet. Please make sure the sheet has rows of data.');
+        alert('لم يتم العثور على سجلات صالحة في الملف. يرجى التأكد من احتواء الملف على صفوف بيانات.');
       }
     } catch (err: any) {
-      alert(`Error reading sheet: ${err.message}`);
+      alert(`خطأ في قراءة ملف الجدول: ${err.message}`);
     }
   };
 
   return (
     <div
+      dir="rtl"
       style={{
         flex: 1,
         display: 'flex',
@@ -103,6 +104,7 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
         overflowY: 'auto',
         background: 'var(--bg-main)',
         padding: '32px 40px',
+        fontFamily: "'Almarai', 'Tajawal', sans-serif",
       }}
     >
       {/* Top Banner / Heading */}
@@ -124,11 +126,11 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
             <FileSpreadsheet size={22} />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.25rem', fontWeight: 700 }}>
-              Batch Generation with Spreadsheet (Sheet Mode)
+            <h1 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>
+              التوليد الجماعي عبر جداول البيانات (Excel / Sheet)
             </h1>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              Download the tailored sheet for <strong style={{ color: 'var(--text-primary)' }}>{template.name}</strong>, fill in the rows in Excel or Google Sheets, then upload to generate all cards.
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0, marginTop: '2px' }}>
+              قم بتحميل ملف Excel مهيأ لنموذج <strong style={{ color: 'var(--text-primary)' }}>{template.name}</strong>، واملأ بيانات السائقين أو المقيمين ثم ارفعه لتوليد جميع البطاقات دفعة واحدة.
             </p>
           </div>
         </div>
@@ -163,31 +165,30 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
                 display: 'inline-block',
                 fontSize: '0.7rem',
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                background: 'rgba(99, 102, 241, 0.15)',
-                color: 'var(--accent-primary)',
+                background: 'rgba(16, 185, 129, 0.15)',
+                color: '#10b981',
                 padding: '3px 8px',
                 borderRadius: '4px',
                 marginBottom: '12px',
               }}
             >
-              Step 1
+              الخطوة 1
             </div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: '8px' }}>
-              Download Spreadsheet Template
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '8px' }}>
+              تحميل نموذج جدول البيانات (CSV)
             </h3>
-            <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '20px' }}>
-              Gets you a pre-formatted Excel / CSV template with exact column headers matching this template&apos;s fields (Driver Name, Card #, ID, Dates, Company, License #, etc.) with pre-filled sample rows.
+            <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '20px' }}>
+              تحصل على ملف Excel مهيأ بأعمدة تطابق تماماً حقول هذا النموذج (الاسم بالعربية والإنجليزية، رقم الهوية، التواريخ، المهنة، المنشأة وغيرها) مع صفوف بيانات تجريبية.
             </p>
           </div>
 
           <button
             className="btn btn-secondary"
             onClick={handleDownloadSheetTemplate}
-            style={{ width: '100%', padding: '12px', justifyContent: 'center' }}
+            style={{ width: '100%', padding: '12px', justifyContent: 'center', fontWeight: 700 }}
           >
-            <Download size={16} style={{ color: 'var(--accent-primary)' }} />
-            <span>Download CSV Template (.csv)</span>
+            <Download size={16} style={{ color: '#10b981' }} />
+            <span>تحميل ملف الجدول (.csv)</span>
           </button>
         </div>
 
@@ -209,21 +210,20 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
                 display: 'inline-block',
                 fontSize: '0.7rem',
                 fontWeight: 700,
-                textTransform: 'uppercase',
                 background: 'rgba(16, 185, 129, 0.15)',
-                color: 'var(--accent-emerald)',
+                color: '#10b981',
                 padding: '3px 8px',
                 borderRadius: '4px',
                 marginBottom: '12px',
               }}
             >
-              Step 2
+              الخطوة 2
             </div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: '8px' }}>
-              Upload Completed Sheet
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '8px' }}>
+              رفع الجدول المكتمل وتوليد البطاقات
             </h3>
-            <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '20px' }}>
-              Upload your saved CSV file or paste the spreadsheet contents directly. Each row is automatically transformed into a full-fidelity personalized card.
+            <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '20px' }}>
+              ارفع ملف CSV بعد تعبئته أو الصق محتويات الجدول مباشرة. يتم تحويل كل صف تلقائياً إلى بطاقة مخصصة بدقة فائقة.
             </p>
           </div>
 
@@ -231,10 +231,10 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
             <button
               className="btn btn-primary"
               onClick={() => fileInputRef.current?.click()}
-              style={{ flex: 1, padding: '12px', justifyContent: 'center' }}
+              style={{ flex: 1, padding: '12px', justifyContent: 'center', fontWeight: 700 }}
             >
               <Upload size={16} />
-              <span>Upload CSV File</span>
+              <span>رفع ملف CSV</span>
             </button>
             <input
               ref={fileInputRef}
@@ -247,16 +247,16 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
             <button
               className="btn btn-secondary"
               onClick={() => setShowPasteBox(!showPasteBox)}
-              style={{ padding: '12px' }}
-              title="Paste text from clipboard"
+              style={{ padding: '12px', fontWeight: 600 }}
+              title="لصق بيانات من الحافظة"
             >
-              Paste Data
+              لصق بيانات
             </button>
           </div>
         </div>
       </div>
 
-      {/* Paste Data Drawer (if toggled) */}
+      {/* Paste Data Drawer */}
       {showPasteBox && (
         <div
           style={{
@@ -267,16 +267,16 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
             marginBottom: '32px',
           }}
         >
-          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '8px' }}>
-            Paste Spreadsheet Rows (CSV or TSV from Excel / Google Sheets)
+          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '8px' }}>
+            لصق صفوف الجدول (CSV أو من Excel / Google Sheets)
           </label>
           <textarea
             className="textarea"
             rows={5}
             value={pasteText}
             onChange={(e) => setPasteText(e.target.value)}
-            placeholder="Paste your copied spreadsheet table here..."
-            style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', marginBottom: '12px' }}
+            placeholder="الصق جدول البيانات المنسوخ هنا..."
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', marginBottom: '12px', textAlign: 'right' }}
           />
           <div style={{ display: 'flex', gap: '8px' }}>
             <button
@@ -288,10 +288,10 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
                 }
               }}
             >
-              Process Pasted Rows
+              معالجة البيانات الملصوقة
             </button>
             <button className="btn btn-ghost btn-sm" onClick={() => setShowPasteBox(false)}>
-              Cancel
+              إلغاء
             </button>
           </div>
         </div>
@@ -302,19 +302,19 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
         <div
           style={{
             background: 'rgba(16, 185, 129, 0.15)',
-            border: '1px solid var(--accent-emerald)',
+            border: '1px solid #10b981',
             borderRadius: 'var(--radius-md)',
             padding: '12px 18px',
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            color: 'var(--accent-emerald)',
+            color: '#10b981',
             fontSize: '0.875rem',
             marginBottom: '24px',
           }}
         >
           <CheckCircle2 size={18} />
-          <span>Successfully imported spreadsheet! Ready to export all cards below.</span>
+          <span>تم استيراد بيانات الجدول بنجاح! جاهز لتوليد وتصدير جميع البطاقات أدناه.</span>
         </div>
       )}
 
@@ -340,13 +340,13 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <Users size={18} style={{ color: 'var(--accent-primary)' }} />
+            <Users size={18} style={{ color: '#10b981' }} />
             <div>
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 600 }}>
-                Loaded Records ({people.length} Cards)
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
+                السجلات الجاهزة ({people.length} بطاقة)
               </h3>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                {selectedCount} of {people.length} selected for batch generation
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, marginTop: '2px' }}>
+                تم تحديد {selectedCount} من إجمالي {people.length} للتوليد والتصدير الجماعي
               </p>
             </div>
           </div>
@@ -354,10 +354,10 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
           <button
             className="btn btn-primary"
             onClick={onOpenBatchExport}
-            style={{ padding: '10px 18px' }}
+            style={{ padding: '10px 18px', fontWeight: 700 }}
           >
             <Archive size={16} />
-            <span>Generate & Download All ({selectedCount} Cards ZIP)</span>
+            <span>توليد وتصدير الكل ({selectedCount} بطاقة ZIP)</span>
           </button>
         </div>
 
@@ -371,27 +371,26 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
                   background: 'rgba(0,0,0,0.2)',
                   color: 'var(--text-muted)',
                   fontSize: '0.75rem',
-                  textTransform: 'uppercase',
                 }}
               >
-                <th style={{ padding: '12px 16px', width: '40px' }}>
+                <th style={{ padding: '12px 16px', width: '40px', textAlign: 'center' }}>
                   <button
                     className="btn btn-ghost btn-icon btn-sm"
                     onClick={() => onToggleSelectAll(!allSelected)}
+                    title="تحديد الكل"
                   >
                     {allSelected ? (
-                      <CheckSquare size={16} style={{ color: 'var(--accent-primary)' }} />
+                      <CheckSquare size={16} style={{ color: '#10b981' }} />
                     ) : (
                       <Square size={16} />
                     )}
                   </button>
                 </th>
-                <th style={{ padding: '12px 16px', textAlign: 'left' }}>Driver Name</th>
-                <th style={{ padding: '12px 16px', textAlign: 'left' }}>Card Number</th>
-                <th style={{ padding: '12px 16px', textAlign: 'left' }}>Driver ID</th>
-                <th style={{ padding: '12px 16px', textAlign: 'left' }}>Company</th>
-                <th style={{ padding: '12px 16px', textAlign: 'left' }}>Dates (Issue - Expiry)</th>
-                <th style={{ padding: '12px 16px', textAlign: 'right' }}>Actions</th>
+                <th style={{ padding: '12px 16px', textAlign: 'right' }}>الاسم</th>
+                <th style={{ padding: '12px 16px', textAlign: 'right' }}>رقم الهوية / الكود</th>
+                <th style={{ padding: '12px 16px', textAlign: 'right' }}>المنشأة / الكفيل</th>
+                <th style={{ padding: '12px 16px', textAlign: 'right' }}>التواريخ (الإصدار - الانتهاء)</th>
+                <th style={{ padding: '12px 16px', textAlign: 'left' }}>الإجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -404,53 +403,50 @@ export const SheetBatchStudio: React.FC<SheetBatchStudioProps> = ({
                     key={person.id}
                     style={{
                       borderBottom: '1px solid var(--border-subtle)',
-                      background: isActive ? 'rgba(99, 102, 241, 0.08)' : 'transparent',
+                      background: isActive ? 'rgba(16, 185, 129, 0.08)' : 'transparent',
                     }}
                   >
-                    <td style={{ padding: '12px 16px' }}>
+                    <td style={{ padding: '12px 16px', textAlign: 'center' }}>
                       <button
                         className="btn btn-ghost btn-icon btn-sm"
                         onClick={() => onToggleSelectPerson(person.id)}
                       >
                         {isSelected ? (
-                          <CheckSquare size={16} style={{ color: 'var(--accent-primary)' }} />
+                          <CheckSquare size={16} style={{ color: '#10b981' }} />
                         ) : (
                           <Square size={16} />
                         )}
                       </button>
                     </td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--text-primary)' }}>
                       {person.name}
                     </td>
-                    <td style={{ padding: '12px 16px', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>
-                      {person.code}
+                    <td style={{ padding: '12px 16px', fontFamily: 'var(--font-mono)', fontSize: '0.82rem' }}>
+                      {person.code || person.customFields?.driverId || '—'}
                     </td>
                     <td style={{ padding: '12px 16px', color: 'var(--text-secondary)' }}>
-                      {person.customFields?.driverId || '—'}
+                      {person.company || person.customFields?.companyAr || '—'}
                     </td>
-                    <td style={{ padding: '12px 16px', color: 'var(--text-secondary)' }}>
-                      {person.company || '—'}
+                    <td style={{ padding: '12px 16px', color: 'var(--text-muted)', fontSize: '0.78rem' }}>
+                      {person.date} {person.customFields?.expiryDate ? `← ${person.customFields?.expiryDate}` : ''}
                     </td>
-                    <td style={{ padding: '12px 16px', color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                      {person.date} {person.customFields?.expiryDate ? `→ ${person.customFields?.expiryDate}` : ''}
-                    </td>
-                    <td style={{ padding: '12px 16px', textAlign: 'right' }}>
-                      <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                    <td style={{ padding: '12px 16px', textAlign: 'left' }}>
+                      <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-start' }}>
                         <button
                           className="btn btn-secondary btn-sm"
                           onClick={() => {
                             onSelectPersonIndex(i);
                             onSwitchToForm();
                           }}
-                          title="Open in Form View"
+                          title="فتح في شاشة التعبئة والمعاينة"
                         >
                           <Eye size={13} />
-                          <span>View Card</span>
+                          <span>معاينة البطاقة</span>
                         </button>
                         <button
                           className="btn btn-danger-ghost btn-sm btn-icon"
                           onClick={() => onDeletePerson(person.id)}
-                          title="Remove"
+                          title="حذف"
                         >
                           <Trash2 size={13} />
                         </button>

@@ -58,7 +58,7 @@ export default function Home() {
         } else {
           localStorage.removeItem(AUTH_STORAGE_KEY);
           setIsAuthenticated(false);
-          setSessionExpiredMessage('Your previous 15-minute session expired. Please enter password again.');
+          setSessionExpiredMessage('انتهت صلاحية الجلسة السابقة (15 دقيقة). يرجى إدخال كلمة المرور مجدداً.');
         }
       }
     } catch {
@@ -77,7 +77,7 @@ export default function Home() {
         const stored = localStorage.getItem(AUTH_STORAGE_KEY);
         if (!stored) {
           setIsAuthenticated(false);
-          setSessionExpiredMessage('Session expired. Please enter password again.');
+          setSessionExpiredMessage('انتهت صلاحية الجلسة. يرجى إدخال كلمة المرور مجدداً.');
           return;
         }
 
@@ -87,7 +87,7 @@ export default function Home() {
         if (remaining <= 0) {
           localStorage.removeItem(AUTH_STORAGE_KEY);
           setIsAuthenticated(false);
-          setSessionExpiredMessage('Session timed out after 15 minutes. Please unlock again.');
+          setSessionExpiredMessage('انتهت صلاحية الجلسة (15 دقيقة). يرجى فتح المنظومة مجدداً.');
         } else {
           setSessionRemainingSeconds(remaining);
         }
@@ -96,7 +96,7 @@ export default function Home() {
         setSessionRemainingSeconds((prev) => {
           if (prev <= 1) {
             setIsAuthenticated(false);
-            setSessionExpiredMessage('Session timed out after 15 minutes.');
+            setSessionExpiredMessage('انتهت صلاحية الجلسة (15 دقيقة).');
             return 0;
           }
           return prev - 1;
@@ -126,7 +126,7 @@ export default function Home() {
       // ignore
     }
     setIsAuthenticated(false);
-    setSessionExpiredMessage('Workspace locked.');
+    setSessionExpiredMessage('تم قفل المنظومة بنجاح.');
   };
 
   // Active items
@@ -399,6 +399,14 @@ export default function Home() {
             activePerson={activePerson}
             onUpdatePerson={handleUpdatePerson}
             onDownloadCard={handleDownloadSingle}
+            templates={templates}
+            onSelectTemplate={(id) => {
+              setActiveTemplateId(id);
+              const tmpl = templates.find((t) => t.id === id);
+              if (tmpl && tmpl.fields.length > 0) {
+                setSelectedFieldId(tmpl.fields[0].id);
+              }
+            }}
           />
         )}
 

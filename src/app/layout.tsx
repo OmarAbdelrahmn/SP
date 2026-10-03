@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'CertiCraft Studio - Template & Certificate Personalization Engine',
-  description: 'Upload any image template, assign personal data fields, and instantly generate high-resolution personalized certificates, passes, and badges in bulk.',
+  title: 'منظومة إصدار وطباعة البطاقات والرخص الرسمية',
+  description: 'منظومة متكاملة لإصدار وتخصيص رخص القيادة وهوية مقيم وبطاقات السائقين وطباعتها وتصديرها بدقة عالية.',
 };
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

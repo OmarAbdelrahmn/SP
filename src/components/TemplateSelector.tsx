@@ -23,10 +23,9 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [templateName, setTemplateName] = useState('');
-  const [templateCategory, setTemplateCategory] = useState<'certificate' | 'badge' | 'voucher' | 'custom'>('custom');
+  const [templateCategory, setTemplateCategory] = useState<'certificate' | 'badge' | 'voucher' | 'custom'>('badge');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [naturalDimensions, setNaturalDimensions] = useState<{ width: number; height: number } | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
 
   if (!isOpen) return null;
 
@@ -56,7 +55,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
 
     const newTemplate: Template = {
       id: `tmpl-custom-${Date.now()}`,
-      name: templateName.trim() || 'Untitled Template',
+      name: templateName.trim() || 'قالب مخصص جديد',
       category: templateCategory,
       imageUrl: previewUrl,
       naturalWidth: naturalDimensions.width,
@@ -65,69 +64,43 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
       fields: [
         {
           id: `f-name-${Date.now()}`,
-          name: 'Recipient Name',
+          name: 'الاسم',
           key: 'name',
           type: 'text',
           x: 50,
           y: 48,
           width: 70,
-          fontFamily: 'Inter',
-          fontSize: 36,
+          fontFamily: 'Almarai',
+          fontSize: 24,
           fontWeight: '700',
           fontStyle: 'normal',
-          color: '#ffffff',
-          textAlign: 'center',
-          textTransform: 'none',
-          letterSpacing: 0.5,
-          lineHeight: 1.2,
-          opacity: 1,
-          hasBackground: true,
-          backgroundColor: 'rgba(0, 0, 0, 0.65)',
-          borderRadius: 8,
-          paddingX: 20,
-          paddingY: 10,
-          zIndex: 1,
-        },
-        {
-          id: `f-title-${Date.now()}`,
-          name: 'Role / Title',
-          key: 'title',
-          type: 'text',
-          x: 50,
-          y: 58,
-          width: 60,
-          fontFamily: 'Inter',
-          fontSize: 20,
-          fontWeight: '500',
-          fontStyle: 'normal',
-          color: '#e2e8f0',
-          textAlign: 'center',
-          textTransform: 'none',
-          letterSpacing: 0.5,
-          lineHeight: 1.2,
-          opacity: 1,
-          zIndex: 2,
-        },
-        {
-          id: `f-date-${Date.now()}`,
-          name: 'Date',
-          key: 'date',
-          type: 'text',
-          x: 50,
-          y: 68,
-          width: 50,
-          fontFamily: 'Inter',
-          fontSize: 16,
-          fontWeight: '400',
-          fontStyle: 'normal',
-          color: '#94a3b8',
+          color: '#111827',
           textAlign: 'center',
           textTransform: 'none',
           letterSpacing: 0,
           lineHeight: 1.2,
           opacity: 1,
-          prefix: 'Issued: ',
-          zIndex: 3,
+          zIndex: 1,
+        },
+        {
+          id: `f-code-${Date.now()}`,
+          name: 'رقم الهوية / الكود',
+          key: 'code',
+          type: 'text',
+          x: 50,
+          y: 58,
+          width: 50,
+          fontFamily: 'Almarai',
+          fontSize: 16,
+          fontWeight: '500',
+          fontStyle: 'normal',
+          color: '#111827',
+          textAlign: 'center',
+          textTransform: 'none',
+          letterSpacing: 0,
+          lineHeight: 1.2,
+          opacity: 1,
+          zIndex: 2,
         },
       ],
     };
@@ -138,10 +111,10 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   };
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop" onClick={onClose} dir="rtl">
       <div
         className="modal-content"
-        style={{ maxWidth: '850px' }}
+        style={{ maxWidth: '850px', fontFamily: "'Almarai', 'Tajawal', sans-serif" }}
         onClick={(e) => e.stopPropagation()}
       >
         <div
@@ -156,26 +129,28 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
               style={{
-                width: '32px',
-                height: '32px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '8px',
-                background: 'rgba(99, 102, 241, 0.15)',
+                background: 'rgba(16, 185, 129, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--accent-primary)',
+                color: '#10b981',
               }}
             >
               <Sparkles size={18} />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Templates & Image Upload</h2>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                Choose a pre-calibrated preset or upload any custom image template
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: '#f8fafc' }}>
+                نماذج البطاقات والرخص
+              </h2>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0, marginTop: '2px' }}>
+                اختر النموذج المطلوب لطباعته أو ارفع قالب بطاقة جديد مخصص
               </p>
             </div>
           </div>
-          <button className="btn btn-ghost btn-icon" onClick={onClose}>
+          <button className="btn btn-ghost btn-icon" onClick={onClose} title="إغلاق">
             <X size={18} />
           </button>
         </div>
@@ -186,14 +161,12 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
             <h3
               style={{
                 fontSize: '0.85rem',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
                 color: 'var(--text-muted)',
                 marginBottom: '14px',
-                fontWeight: 600,
+                fontWeight: 700,
               }}
             >
-              Preset Ready-To-Use Templates
+              النماذج الرسمية الجاهزة والمعتمدة
             </h3>
 
             <div
@@ -215,15 +188,15 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                     style={{
                       borderRadius: 'var(--radius-md)',
                       border: isSelected
-                        ? '2px solid var(--accent-primary)'
+                        ? '2px solid #10b981'
                         : '1px solid var(--border-subtle)',
                       background: isSelected
-                        ? 'rgba(99, 102, 241, 0.08)'
+                        ? 'rgba(16, 185, 129, 0.08)'
                         : 'var(--bg-surface-elevated)',
                       overflow: 'hidden',
                       cursor: 'pointer',
                       transition: 'all 0.15s ease',
-                      boxShadow: isSelected ? '0 0 16px rgba(99, 102, 241, 0.25)' : 'none',
+                      boxShadow: isSelected ? '0 0 16px rgba(16, 185, 129, 0.25)' : 'none',
                     }}
                   >
                     <div
@@ -237,14 +210,16 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                         overflow: 'hidden',
                       }}
                     >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={tmpl.imageUrl}
                         alt={tmpl.name}
                         style={{
                           width: '100%',
                           height: '100%',
-                          objectFit: 'cover',
-                          opacity: 0.9,
+                          objectFit: 'contain',
+                          opacity: 0.95,
+                          background: '#fff',
                         }}
                       />
                       {isSelected && (
@@ -252,8 +227,8 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                           style={{
                             position: 'absolute',
                             top: '8px',
-                            right: '8px',
-                            background: 'var(--accent-primary)',
+                            left: '8px',
+                            background: '#10b981',
                             color: '#fff',
                             borderRadius: '50%',
                             width: '24px',
@@ -271,8 +246,8 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                       <div
                         style={{
                           fontSize: '0.9rem',
-                          fontWeight: 600,
-                          color: isSelected ? 'var(--accent-primary)' : 'var(--text-primary)',
+                          fontWeight: 700,
+                          color: isSelected ? '#10b981' : 'var(--text-primary)',
                           marginBottom: '4px',
                         }}
                       >
@@ -287,8 +262,8 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                           color: 'var(--text-muted)',
                         }}
                       >
-                        <span style={{ textTransform: 'capitalize' }}>{tmpl.category}</span>
-                        <span>{tmpl.fields.length} data fields</span>
+                        <span>{tmpl.fields.length} حقل بيانات مدمج</span>
+                        <span style={{ color: '#10b981', fontWeight: 600 }}>جاهز للطباعة</span>
                       </div>
                     </div>
                   </div>
@@ -307,14 +282,12 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
             <h3
               style={{
                 fontSize: '0.85rem',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
                 color: 'var(--text-muted)',
                 marginBottom: '14px',
-                fontWeight: 600,
+                fontWeight: 700,
               }}
             >
-              Upload Any Custom Image Template
+              رفع قالب صورة مخصص جديد
             </h3>
 
             {!previewUrl ? (
@@ -330,7 +303,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                   justifyContent: 'center',
                   gap: '12px',
                   cursor: 'pointer',
-                  background: 'rgba(99, 102, 241, 0.03)',
+                  background: 'rgba(16, 185, 129, 0.03)',
                   transition: 'background 0.2s',
                 }}
               >
@@ -346,21 +319,21 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                     width: '48px',
                     height: '48px',
                     borderRadius: '50%',
-                    background: 'rgba(99, 102, 241, 0.15)',
+                    background: 'rgba(16, 185, 129, 0.15)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'var(--accent-primary)',
+                    color: '#10b981',
                   }}
                 >
                   <Upload size={22} />
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '4px' }}>
-                    Click to browse or drop your image template here
+                  <div style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '4px' }}>
+                    اضغط هنا لاختيار صورة أو اسحب القالب وأفلته
                   </div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    Supports high-resolution PNG, JPG, or WebP (Certificates, Badges, Tickets, Cards)
+                    يدعم صور عالية الدقة بصيغة PNG أو JPG أو WebP (بطاقات، رخص، هويات)
                   </div>
                 </div>
               </div>
@@ -386,6 +359,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                     flexShrink: 0,
                   }}
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={previewUrl}
                     alt="Upload Preview"
@@ -403,14 +377,14 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                         marginBottom: '6px',
                       }}
                     >
-                      Template Name
+                      اسم النموذج
                     </label>
                     <input
                       type="text"
                       className="input"
                       value={templateName}
                       onChange={(e) => setTemplateName(e.target.value)}
-                      placeholder="e.g. 2026 Honor Roll Certificate"
+                      placeholder="مثال: رخصة قيادة خاصة جديدة"
                     />
                   </div>
 
@@ -424,30 +398,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                           marginBottom: '6px',
                         }}
                       >
-                        Category
-                      </label>
-                      <select
-                        className="select"
-                        value={templateCategory}
-                        onChange={(e) => setTemplateCategory(e.target.value as any)}
-                      >
-                        <option value="certificate">Certificate / Diploma</option>
-                        <option value="badge">Badge / ID Card / Pass</option>
-                        <option value="voucher">Ticket / Gift Voucher</option>
-                        <option value="custom">Custom Format</option>
-                      </select>
-                    </div>
-
-                    <div style={{ flex: 1 }}>
-                      <label
-                        style={{
-                          display: 'block',
-                          fontSize: '0.8rem',
-                          color: 'var(--text-secondary)',
-                          marginBottom: '6px',
-                        }}
-                      >
-                        Image Resolution
+                        أبعاد الصورة الأصلية
                       </label>
                       <div
                         style={{
@@ -459,15 +410,15 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                         }}
                       >
                         {naturalDimensions
-                          ? `${naturalDimensions.width} × ${naturalDimensions.height} px`
-                          : 'Loading...'}
+                          ? `${naturalDimensions.width} × ${naturalDimensions.height} بكسل`
+                          : 'جاري التحميل...'}
                       </div>
                     </div>
                   </div>
 
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button className="btn btn-primary" onClick={handleCreateTemplate}>
-                      <Plus size={16} /> Use This Template
+                      <Plus size={16} /> اعتماد هذا القالب
                     </button>
                     <button
                       className="btn btn-ghost"
@@ -476,7 +427,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                         setNaturalDimensions(null);
                       }}
                     >
-                      Choose Different Image
+                      اختيار صورة أخرى
                     </button>
                   </div>
                 </div>

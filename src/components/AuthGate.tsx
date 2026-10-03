@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Lock, KeyRound, Eye, EyeOff, ShieldCheck, AlertCircle, ArrowRight, Clock } from 'lucide-react';
+import { Lock, KeyRound, Eye, EyeOff, ShieldCheck, AlertCircle, ArrowLeft, Clock } from 'lucide-react';
 
 interface AuthGateProps {
   onUnlock: () => void;
@@ -28,7 +28,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
     if (e) e.preventDefault();
 
     if (!password) {
-      setError('Please enter the access password.');
+      setError('يرجى إدخال كلمة المرور للمتابعة.');
       triggerShake();
       return;
     }
@@ -37,7 +37,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
       setError(null);
       onUnlock();
     } else {
-      setError('Incorrect password. Please try again.');
+      setError('كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.');
       triggerShake();
       setPassword('');
       if (inputRef.current) {
@@ -53,6 +53,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
 
   return (
     <div
+      dir="rtl"
       style={{
         position: 'fixed',
         inset: 0,
@@ -63,6 +64,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
         background: 'radial-gradient(ellipse at center, #0f172a 0%, #060911 100%)',
         padding: '20px',
         overflow: 'hidden',
+        fontFamily: "'Almarai', 'Tajawal', sans-serif",
       }}
     >
       {/* Background Ambient Glows */}
@@ -142,18 +144,21 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
             letterSpacing: '-0.02em',
           }}
         >
-          Password Protected
+          منظومة إصدار وتخصيص البطاقات
         </h1>
         <p
           style={{
             fontSize: '0.85rem',
             color: '#94a3b8',
             marginBottom: '24px',
-            lineHeight: 1.5,
+            lineHeight: 1.6,
           }}
         >
-          Please enter your credentials to access the studio.
-          Sessions automatically expire every 15 minutes.
+          يرجى إدخال كلمة المرور للوصول إلى لوحة التحكم والطباعة.
+          <br />
+          <span style={{ fontSize: '0.78rem', color: '#818cf8' }}>
+            تنتهي صلاحية الجلسة تلقائياً كل 15 دقيقة للأمان.
+          </span>
         </p>
 
         {/* Expired / Error Alert */}
@@ -171,7 +176,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
               color: '#fde047',
               fontSize: '0.82rem',
               marginBottom: '18px',
-              textAlign: 'left',
+              textAlign: 'right',
             }}
           >
             <Clock size={16} style={{ flexShrink: 0 }} />
@@ -193,7 +198,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
               color: '#fca5a5',
               fontSize: '0.82rem',
               marginBottom: '18px',
-              textAlign: 'left',
+              textAlign: 'right',
             }}
           >
             <AlertCircle size={16} style={{ flexShrink: 0 }} />
@@ -207,7 +212,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
             <div
               style={{
                 position: 'absolute',
-                left: '14px',
+                right: '14px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 color: '#64748b',
@@ -226,10 +231,10 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
                 setPassword(e.target.value);
                 if (error) setError(null);
               }}
-              placeholder="Enter password..."
+              placeholder="أدخل كلمة المرور..."
               style={{
                 width: '100%',
-                padding: '14px 44px 14px 42px',
+                padding: '14px 44px 14px 44px',
                 background: 'rgba(30, 41, 59, 0.8)',
                 border: error
                   ? '1px solid #ef4444'
@@ -239,6 +244,8 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
                 fontSize: '0.95rem',
                 outline: 'none',
                 transition: 'border-color 0.2s, box-shadow 0.2s',
+                textAlign: 'right',
+                fontFamily: 'inherit',
               }}
               onFocus={(e) => {
                 if (!error) {
@@ -260,7 +267,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
               tabIndex={-1}
               style={{
                 position: 'absolute',
-                right: '12px',
+                left: '12px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 background: 'transparent',
@@ -285,7 +292,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
               background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
               color: '#ffffff',
               border: 'none',
-              fontWeight: 600,
+              fontWeight: 700,
               fontSize: '0.95rem',
               cursor: 'pointer',
               display: 'flex',
@@ -294,6 +301,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
               gap: '8px',
               boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)',
               transition: 'transform 0.15s, box-shadow 0.15s',
+              fontFamily: 'inherit',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-1px)';
@@ -304,8 +312,8 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
               e.currentTarget.style.boxShadow = '0 4px 14px rgba(99, 102, 241, 0.4)';
             }}
           >
-            <span>Unlock Workspace</span>
-            <ArrowRight size={17} />
+            <span>دخول وفتح المنظومة</span>
+            <ArrowLeft size={17} />
           </button>
         </form>
 
@@ -321,7 +329,7 @@ export const AuthGate: React.FC<AuthGateProps> = ({ onUnlock, expiredReason }) =
           }}
         >
           <ShieldCheck size={14} style={{ color: '#10b981' }} />
-          <span>Protected with 15-Minute Auto-Timeout</span>
+          <span>حماية مشفرة مع إغلاق تلقائي كل 15 دقيقة</span>
         </div>
       </div>
 
