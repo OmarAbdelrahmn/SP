@@ -127,12 +127,14 @@ export async function renderTemplateToCanvas(
   if (typeof document !== 'undefined' && 'fonts' in document) {
     try {
       await Promise.all([
+        document.fonts.load('400 14px "Tajawal"'),
+        document.fonts.load('500 14px "Tajawal"'),
+        document.fonts.load('700 14px "Tajawal"'),
+        document.fonts.load('400 14px "Inter"'),
+        document.fonts.load('500 14px "Inter"'),
+        document.fonts.load('600 14px "Inter"'),
         document.fonts.load('400 14px "Almarai"'),
         document.fonts.load('700 14px "Almarai"'),
-        document.fonts.load('600 14px "Inter"'),
-        document.fonts.load('700 14px "Inter"'),
-        document.fonts.load('400 14px "Tajawal"'),
-        document.fonts.load('700 14px "Tajawal"'),
         document.fonts.ready,
       ]);
     } catch {
@@ -188,8 +190,17 @@ export async function renderTemplateToCanvas(
         }
       }
 
-      ctx.direction = 'ltr';
-      ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px "${field.fontFamily}", "Almarai", "Tajawal", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+      // Set proper text direction: RTL for Arabic / right-aligned, LTR for English / left-aligned
+      const isArabic = /[\u0600-\u06FF]/.test(text);
+      ctx.direction = (field.textAlign === 'right' || isArabic) ? 'rtl' : 'ltr';
+
+      // Font stack tailored to field language
+      const isEnglish = !isArabic && /[a-zA-Z]/.test(text);
+      const fontStack = isEnglish
+        ? `"${field.fontFamily}", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif`
+        : `"${field.fontFamily}", "Tajawal", "Almarai", "Cairo", "Segoe UI", Tahoma, sans-serif`;
+
+      ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px ${fontStack}`;
 
       // Auto-fit: only shrink if text exceeds container and available space
       let textWidth = ctx.measureText(text).width;
@@ -197,7 +208,7 @@ export async function renderTemplateToCanvas(
       if (textWidth > maxAllowedWidth && maxAllowedWidth > 50) {
         const reduction = maxAllowedWidth / textWidth;
         fontSize = Math.max(12, fontSize * reduction);
-        ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px "${field.fontFamily}", "Almarai", "Tajawal", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+        ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px ${fontStack}`;
         textWidth = ctx.measureText(text).width;
       }
 

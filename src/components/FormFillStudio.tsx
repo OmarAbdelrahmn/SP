@@ -39,13 +39,27 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Update canvas on person or template change
+  // Update canvas on person or template change, and when fonts finish loading
   useEffect(() => {
     if (!canvasRef.current) return;
     let isMounted = true;
-    renderTemplateToCanvas(canvasRef.current, template, activePerson).catch((err) => {
-      if (isMounted) console.error('Canvas render error in form view:', err);
-    });
+
+    const render = () => {
+      if (canvasRef.current && isMounted) {
+        renderTemplateToCanvas(canvasRef.current, template, activePerson).catch((err) => {
+          if (isMounted) console.error('Canvas render error in form view:', err);
+        });
+      }
+    };
+
+    render();
+
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      document.fonts.ready.then(() => {
+        if (isMounted) render();
+      });
+    }
+
     return () => {
       isMounted = false;
     };
@@ -296,13 +310,14 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
+                      dir="rtl"
                       value={custom.nameAr || activePerson.name}
                       onChange={(e) => {
                         handleCustomFieldChange('nameAr', e.target.value);
                         onUpdatePerson(activePerson.id, { name: e.target.value });
                       }}
                       placeholder="اسلام حماده فؤاد عبد الرحمن"
-                      style={{ fontWeight: 700 }}
+                      style={{ fontWeight: 700, fontFamily: 'Tajawal, sans-serif' }}
                     />
                   </div>
                   <div>
@@ -312,9 +327,11 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
+                      dir="ltr"
                       value={custom.nameEn || 'ESLAM HAMADA FOUAD ABDELRAHMAN'}
                       onChange={(e) => handleCustomFieldChange('nameEn', e.target.value)}
                       placeholder="ESLAM HAMADA FOUAD ABDELRAHMAN"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
                     />
                   </div>
                 </div>
@@ -535,13 +552,14 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
+                      dir="rtl"
                       value={custom.nameAr || activePerson.name}
                       onChange={(e) => {
                         handleCustomFieldChange('nameAr', e.target.value);
                         onUpdatePerson(activePerson.id, { name: e.target.value });
                       }}
                       placeholder="اسلام حماده فؤاد عبد الرحمن"
-                      style={{ fontWeight: 700 }}
+                      style={{ fontWeight: 700, fontFamily: 'Tajawal, sans-serif' }}
                     />
                   </div>
                   <div>
@@ -551,9 +569,11 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
+                      dir="ltr"
                       value={custom.nameEn || 'ESLAM HAMADA FOUAD ABDELRAHMAN'}
                       onChange={(e) => handleCustomFieldChange('nameEn', e.target.value)}
                       placeholder="ESLAM HAMADA FOUAD ABDELRAHMAN"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
                     />
                   </div>
                 </div>

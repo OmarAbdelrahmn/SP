@@ -274,6 +274,14 @@ export const CanvasStudio: React.FC<CanvasStudioProps> = ({
                 top: `${field.y}%`,
                 width: `${field.width}%`,
                 height: `${boxHeightPx}px`,
+                transform:
+                  field.type === 'text'
+                    ? field.textAlign === 'right'
+                      ? 'translate(-100%, -50%)'
+                      : field.textAlign === 'left'
+                      ? 'translate(0%, -50%)'
+                      : 'translate(-50%, -50%)'
+                    : 'translate(-50%, -50%)',
                 zIndex: isSelected ? 40 : field.zIndex,
               }}
               onPointerDown={(e) => handlePointerDown(e, field, 'drag')}
