@@ -28,6 +28,7 @@ export interface TemplateField {
   textTransform: TextTransform;
   letterSpacing: number;    // in px
   lineHeight: number;       // multiplier, e.g. 1.2
+  textBaseline?: 'middle' | 'alphabetic'; // 'middle' (default): y = vertical center, 'alphabetic': y = text baseline
   
   // Effects & Styling
   opacity: number;          // 0 to 1

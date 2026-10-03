@@ -113,10 +113,48 @@
   font-style: normal;
   font-display: swap;
 }
+/* Simplified Arabic (Saudi official card font) */
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/Inter-Bold.ttf') format('truetype');
-  font-weight: 800;
+  font-family: 'Simplified Arabic';
+  src: url('/fonts/Simplified-Arabic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Simplified Arabic';
+  src: url('/fonts/Simplified-Arabic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Simplified Arabic';
+  src: url('/fonts/Simplified-Arabic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Arial (Local fallback) */
+@font-face {
+  font-family: 'Arial';
+  src: url('/fonts/Arial-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Arial';
+  src: url('/fonts/Arial-Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Arial';
+  src: url('/fonts/Arial-Bold.ttf') format('truetype');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }

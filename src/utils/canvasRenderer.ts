@@ -127,12 +127,15 @@ export async function renderTemplateToCanvas(
   if (typeof document !== 'undefined' && 'fonts' in document) {
     try {
       await Promise.all([
+        document.fonts.load('400 14px "Simplified Arabic"'),
+        document.fonts.load('700 14px "Simplified Arabic"'),
+        document.fonts.load('400 14px "Arial"'),
+        document.fonts.load('700 14px "Arial"'),
         document.fonts.load('400 14px "Tajawal"'),
-        document.fonts.load('500 14px "Tajawal"'),
         document.fonts.load('700 14px "Tajawal"'),
         document.fonts.load('400 14px "Inter"'),
-        document.fonts.load('500 14px "Inter"'),
         document.fonts.load('600 14px "Inter"'),
+        document.fonts.load('700 14px "Inter"'),
         document.fonts.load('400 14px "Almarai"'),
         document.fonts.load('700 14px "Almarai"'),
         document.fonts.ready,
@@ -197,10 +200,16 @@ export async function renderTemplateToCanvas(
       // Font stack tailored to field language
       const isEnglish = !isArabic && /[a-zA-Z]/.test(text);
       const fontStack = isEnglish
-        ? `"${field.fontFamily}", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif`
-        : `"${field.fontFamily}", "Tajawal", "Almarai", "Cairo", "Segoe UI", Tahoma, sans-serif`;
+        ? `"${field.fontFamily}", "Arial", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif`
+        : `"${field.fontFamily}", "Simplified Arabic", "Arial", "Tajawal", "Almarai", "Cairo", "Segoe UI", Tahoma, sans-serif`;
 
       ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px ${fontStack}`;
+
+      // Letter spacing (supported by modern Chromium/Firefox/Safari canvas)
+      const spacingPx = (field.letterSpacing || 0) * scaleFactor;
+      if ('letterSpacing' in ctx) {
+        (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = `${spacingPx}px`;
+      }
 
       // Auto-fit: only shrink if text exceeds container and available space
       let textWidth = ctx.measureText(text).width;
@@ -213,7 +222,8 @@ export async function renderTemplateToCanvas(
       }
 
       ctx.textAlign = field.textAlign;
-      ctx.textBaseline = 'middle';
+      // 'alphabetic' pins y to the exact text baseline (used for official ID card layouts)
+      ctx.textBaseline = field.textBaseline || 'middle';
 
       // Drop shadow
       if (field.shadowColor && field.shadowBlur) {
@@ -232,7 +242,7 @@ export async function renderTemplateToCanvas(
         let pillX = centerX - pillW / 2;
         if (field.textAlign === 'left') pillX = centerX - padX;
         if (field.textAlign === 'right') pillX = centerX - pillW + padX;
-        const pillY = centerY - pillH / 2;
+        const pillY = field.textBaseline === 'alphabetic' ? centerY - fontSize * 0.75 - padY : centerY - pillH / 2;
 
         ctx.fillStyle = field.backgroundColor || 'rgba(255,255,255,0.9)';
         const radius = (field.borderRadius || 6) * scaleFactor;
