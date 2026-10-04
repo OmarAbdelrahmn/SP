@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Template, PersonRecord } from '../types/template';
-import { renderTemplateToCanvas, toArabicNumerals } from '../utils/canvasRenderer';
+import { renderTemplateToCanvas, toArabicNumerals, trimImageBorders, clearImageCache } from '../utils/canvasRenderer';
 import {
   Download,
   Printer,
@@ -17,7 +17,10 @@ import {
   RefreshCw,
   Image as ImageIcon,
   Check,
+  ZoomIn,
+  ZoomOut,
 } from 'lucide-react';
+
 
 interface FormFillStudioProps {
   template: Template;
@@ -81,10 +84,62 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
     reader.onload = (event) => {
       const base64 = event.target?.result as string;
       if (base64) {
-        onUpdatePerson(activePerson.id, { photoUrl: base64 });
+        // Automatically trim white/transparent borders so any uploaded image fits fully into the rectangle
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const cleaned = trimImageBorders(img);
+            const nw = 'naturalWidth' in cleaned ? (cleaned.naturalWidth || cleaned.width) : cleaned.width;
+            const nh = 'naturalHeight' in cleaned ? (cleaned.naturalHeight || cleaned.height) : cleaned.height;
+            const canvas = document.createElement('canvas');
+            canvas.width = nw;
+            canvas.height = nh;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(cleaned, 0, 0);
+              const isPng = file.type === 'image/png';
+              const optimizedDataUrl = canvas.toDataURL(isPng ? 'image/png' : 'image/jpeg', 0.96);
+              onUpdatePerson(activePerson.id, {
+                photoUrl: optimizedDataUrl,
+                photoZoom: 1,
+                photoOffsetX: 0,
+                photoOffsetY: 0,
+              });
+              return;
+            }
+          } catch {
+            // Fallback to raw base64
+          }
+          onUpdatePerson(activePerson.id, {
+            photoUrl: base64,
+            photoZoom: 1,
+            photoOffsetX: 0,
+            photoOffsetY: 0,
+          });
+        };
+        img.onerror = () => {
+          onUpdatePerson(activePerson.id, {
+            photoUrl: base64,
+            photoZoom: 1,
+            photoOffsetX: 0,
+            photoOffsetY: 0,
+          });
+        };
+        img.src = base64;
       }
     };
     reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleResetOriginalPhoto = () => {
+    clearImageCache('/templates/sample-person.jpg');
+    onUpdatePerson(activePerson.id, {
+      photoUrl: `/templates/sample-person.jpg?v=${Date.now()}`,
+      photoZoom: 1,
+      photoOffsetX: 0,
+      photoOffsetY: 0,
+    });
   };
 
   const handlePrint = () => {
@@ -231,21 +286,28 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <div
                   style={{
-                    width: '64px',
-                    height: '76px',
+                    width: '68px',
+                    height: '80px',
                     borderRadius: '8px',
                     border: '2px solid rgba(16, 185, 129, 0.5)',
                     overflow: 'hidden',
-                    background: '#000',
+                    background: '#0f172a',
                     flexShrink: 0,
                     boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
+                    position: 'relative',
                   }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activePerson.photoUrl || '/templates/sample-person.jpg'}
                     alt="Driver Photo"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      transform: `scale(${activePerson.photoZoom || 1}) translate(${-(activePerson.photoOffsetX || 0)}%, ${-(activePerson.photoOffsetY || 0)}%)`,
+                      transition: 'transform 0.1s ease-out',
+                    }}
                   />
                 </div>
 
@@ -268,8 +330,8 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     </button>
                     <button
                       className="btn btn-ghost btn-sm"
-                      onClick={() => onUpdatePerson(activePerson.id, { photoUrl: '/templates/sample-person.jpg' })}
-                      title="استعادة الصورة الأصلية"
+                      onClick={handleResetOriginalPhoto}
+                      title="استعادة الصورة الأصلية وضبط الحجم الافتراضي"
                       style={{ fontSize: '0.78rem' }}
                     >
                       <RefreshCw size={13} />
@@ -277,7 +339,164 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     </button>
                   </div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                    يتم مطابقة الصورة وضبط أبعادها بدقة لتملأ المربع الأبيض المخصص بالبطاقة تلقائياً.
+                    يتم ملاءمة أي صورة مرفوعة لتملأ المربع الأبيض بالكامل بنسبة 100% وإزالة أي حواف بيضاء زائدة تلقائياً.
+                  </div>
+                </div>
+              </div>
+
+              {/* Photo Zoom & Position Controls */}
+              <div
+                style={{
+                  marginTop: '14px',
+                  paddingTop: '12px',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                }}
+              >
+                {/* Zoom Control Row */}
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      color: 'var(--text-secondary)',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10b981' }}>
+                      <ZoomIn size={14} />
+                      <span>التحكم في تكبير الصورة (Zoom)</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span
+                        style={{
+                          fontSize: '0.75rem',
+                          fontFamily: 'var(--font-mono)',
+                          color: '#10b981',
+                          background: 'rgba(16, 185, 129, 0.12)',
+                          padding: '2px 8px',
+                          borderRadius: '4px',
+                          fontWeight: 700,
+                        }}
+                      >
+                        {Math.round((activePerson.photoZoom || 1) * 100)}%
+                      </span>
+                      <button
+                        type="button"
+                        className="btn btn-ghost btn-xs"
+                        onClick={() => onUpdatePerson(activePerson.id, { photoZoom: 1, photoOffsetX: 0, photoOffsetY: 0 })}
+                        title="إعادة ضبط التكبير والموضع"
+                        style={{ fontSize: '0.7rem', padding: '2px 6px' }}
+                      >
+                        إعادة ضبط
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button
+                      type="button"
+                      className="btn btn-secondary btn-icon"
+                      style={{ width: '28px', height: '28px', minWidth: '28px' }}
+                      onClick={() =>
+                        onUpdatePerson(activePerson.id, {
+                          photoZoom: Math.max(0.5, Number(((activePerson.photoZoom || 1) - 0.05).toFixed(2))),
+                        })
+                      }
+                      title="تصغير (-5%)"
+                    >
+                      <ZoomOut size={13} />
+                    </button>
+
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="2.5"
+                      step="0.05"
+                      value={activePerson.photoZoom || 1}
+                      onChange={(e) =>
+                        onUpdatePerson(activePerson.id, { photoZoom: Number(e.target.value) })
+                      }
+                      style={{ flex: 1, accentColor: '#10b981', cursor: 'pointer' }}
+                    />
+
+                    <button
+                      type="button"
+                      className="btn btn-secondary btn-icon"
+                      style={{ width: '28px', height: '28px', minWidth: '28px' }}
+                      onClick={() =>
+                        onUpdatePerson(activePerson.id, {
+                          photoZoom: Math.min(2.5, Number(((activePerson.photoZoom || 1) + 0.05).toFixed(2))),
+                        })
+                      }
+                      title="تكبير (+5%)"
+                    >
+                      <ZoomIn size={13} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Fine Position Tuning (Y & X offsets) */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        fontSize: '0.72rem',
+                        color: 'var(--text-muted)',
+                        marginBottom: '4px',
+                      }}
+                    >
+                      <span>تحريك رأسي (أعلى / أسفل)</span>
+                      <span style={{ fontFamily: 'var(--font-mono)' }}>
+                        {activePerson.photoOffsetY || 0}%
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="-40"
+                      max="40"
+                      step="2"
+                      value={activePerson.photoOffsetY || 0}
+                      onChange={(e) =>
+                        onUpdatePerson(activePerson.id, { photoOffsetY: Number(e.target.value) })
+                      }
+                      style={{ width: '100%', accentColor: '#10b981', cursor: 'pointer' }}
+                    />
+                  </div>
+
+                  <div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        fontSize: '0.72rem',
+                        color: 'var(--text-muted)',
+                        marginBottom: '4px',
+                      }}
+                    >
+                      <span>تحريك أفقي (يمين / يسار)</span>
+                      <span style={{ fontFamily: 'var(--font-mono)' }}>
+                        {activePerson.photoOffsetX || 0}%
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="-40"
+                      max="40"
+                      step="2"
+                      value={activePerson.photoOffsetX || 0}
+                      onChange={(e) =>
+                        onUpdatePerson(activePerson.id, { photoOffsetX: Number(e.target.value) })
+                      }
+                      style={{ width: '100%', accentColor: '#10b981', cursor: 'pointer' }}
+                    />
                   </div>
                 </div>
               </div>

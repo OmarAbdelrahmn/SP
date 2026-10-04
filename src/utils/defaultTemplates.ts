@@ -38,15 +38,15 @@ const cardText = (
 });
 
 const cardPhoto = (id: string): TemplateField => ({
-  // Personal Photo in the left white box (63px to 298px, 145px to 423px)
+  // Personal Photo in the left white box (exact frame: 62px to 298px, 144px to 424px on 952x578 template)
   id,
   name: 'الصورة الشخصية (Photo)',
   key: 'photo',
   type: 'image',
-  x: 18.96,
-  y: 49.14,
-  width: 24.68,
-  height: 48.1,
+  x: 18.9076, // 180 / 952 * 100
+  y: 49.1349, // 284 / 578 * 100
+  width: 24.7899, // 236 / 952 * 100
+  height: 48.4429, // 280 / 578 * 100
   fontFamily: 'Almarai',
   fontSize: 12,
   fontWeight: '400',

@@ -77,6 +77,9 @@ export interface PersonRecord {
   company: string;        // Organization, institution, or sponsor
   email: string;
   photoUrl?: string;      // Avatar / portrait URL or base64
+  photoZoom?: number;     // Zoom multiplier (default: 1.0, range: 0.5 to 2.5)
+  photoOffsetX?: number;  // Horizontal offset percentage (-50 to +50)
+  photoOffsetY?: number;  // Vertical offset percentage (-50 to +50)
   customFields?: Record<string, string>;
   isSelected: boolean;
 }

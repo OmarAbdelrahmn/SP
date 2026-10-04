@@ -4,6 +4,23 @@ import { Template, TemplateField, PersonRecord } from '../types/template';
 
 // Cache loaded images to make re-rendering ultra fast
 const imageCache = new Map<string, HTMLImageElement>();
+// Cache trimmed images to avoid re-analyzing pixels repeatedly
+const trimmedImageCache = new WeakMap<HTMLImageElement, HTMLCanvasElement | HTMLImageElement>();
+
+export function clearImageCache(src?: string) {
+  if (src) {
+    // Remove both exact and query-parameter variations
+    for (const key of Array.from(imageCache.keys())) {
+      if (key === src || key.startsWith(src + '?')) {
+        const cached = imageCache.get(key);
+        if (cached) trimmedImageCache.delete(cached);
+        imageCache.delete(key);
+      }
+    }
+  } else {
+    imageCache.clear();
+  }
+}
 
 export async function loadImage(src: string): Promise<HTMLImageElement> {
   if (imageCache.has(src)) {
@@ -267,10 +284,10 @@ export async function renderTemplateToCanvas(
       ctx.fillStyle = field.color;
       ctx.fillText(text, centerX, centerY);
     } else if (field.type === 'image') {
-      const boxW = containerWidth;
-      const boxH = ((field.height || field.width) / 100) * height;
-      const boxX = centerX - boxW / 2;
-      const boxY = centerY - boxH / 2;
+      const boxW = Math.round(containerWidth);
+      const boxH = Math.round(((field.height || field.width) / 100) * height);
+      const boxX = Math.round(centerX - boxW / 2);
+      const boxY = Math.round(centerY - boxH / 2);
 
       const photoUrl = resolveFieldValue(field, person);
       let imgToDraw: HTMLImageElement | null = null;
@@ -301,7 +318,10 @@ export async function renderTemplateToCanvas(
       }
 
       if (imgToDraw) {
-        drawImageProp(ctx, imgToDraw, boxX, boxY, boxW, boxH);
+        const zoom = (person.photoZoom ?? (person.customFields?.photoZoom ? Number(person.customFields.photoZoom) : 1)) || 1;
+        const offsetX = (person.photoOffsetX ?? (person.customFields?.photoOffsetX ? Number(person.customFields.photoOffsetX) : 0)) || 0;
+        const offsetY = (person.photoOffsetY ?? (person.customFields?.photoOffsetY ? Number(person.customFields.photoOffsetY) : 0)) || 0;
+        drawImageProp(ctx, imgToDraw, boxX, boxY, boxW, boxH, zoom, offsetX, offsetY);
       } else {
         // Fallback stylish avatar box
         ctx.fillStyle = '#475569';
@@ -380,34 +400,174 @@ function drawRoundedRect(
   ctx.closePath();
 }
 
-// Draw image covering box while maintaining aspect ratio (object-fit: cover)
+
+/**
+ * Automatically detects and trims uniform white/light or transparent border bands from an image,
+ * ensuring any uploaded photo or picture fits fully into the card frame without white margins.
+ */
+export function trimImageBorders(img: HTMLImageElement | HTMLCanvasElement): HTMLCanvasElement | HTMLImageElement {
+  if (typeof document === 'undefined') return img;
+  if ('complete' in img && trimmedImageCache.has(img as HTMLImageElement)) {
+    return trimmedImageCache.get(img as HTMLImageElement)!;
+  }
+
+  const nw = 'naturalWidth' in img ? (img.naturalWidth || img.width) : img.width;
+  const nh = 'naturalHeight' in img ? (img.naturalHeight || img.height) : img.height;
+  if (!nw || !nh || nw < 10 || nh < 10) return img;
+
+  try {
+    const canvas = document.createElement('canvas');
+    // Scale down for ultra-fast border detection (max 300px)
+    const maxDim = 300;
+    const scale = Math.min(1, maxDim / Math.max(nw, nh));
+    const sw = Math.max(10, Math.round(nw * scale));
+    const sh = Math.max(10, Math.round(nh * scale));
+
+    canvas.width = sw;
+    canvas.height = sh;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return img;
+
+    ctx.drawImage(img, 0, 0, sw, sh);
+    const imgData = ctx.getImageData(0, 0, sw, sh);
+    const data = imgData.data;
+
+    // A pixel is blank if transparent (alpha < 25) or near-white (RGB all > 238)
+    const isBlank = (x: number, y: number): boolean => {
+      const idx = (y * sw + x) * 4;
+      if (data[idx + 3] < 25) return true;
+      const r = data[idx];
+      const g = data[idx + 1];
+      const b = data[idx + 2];
+      return r > 238 && g > 238 && b > 238;
+    };
+
+    // Scan top margin (up to 30% of height)
+    let top = 0;
+    const maxTop = Math.floor(sh * 0.3);
+    for (let y = 0; y < maxTop; y++) {
+      let blankCount = 0;
+      for (let x = 0; x < sw; x++) {
+        if (isBlank(x, y)) blankCount++;
+      }
+      if (blankCount / sw >= 0.95) top = y + 1;
+      else break;
+    }
+
+    // Scan bottom margin (up to 30% of height)
+    let bottom = sh;
+    const maxBottom = Math.floor(sh * 0.7);
+    for (let y = sh - 1; y >= maxBottom; y--) {
+      let blankCount = 0;
+      for (let x = 0; x < sw; x++) {
+        if (isBlank(x, y)) blankCount++;
+      }
+      if (blankCount / sw >= 0.95) bottom = y;
+      else break;
+    }
+
+    // Scan left margin (up to 30% of width)
+    let left = 0;
+    const maxLeft = Math.floor(sw * 0.3);
+    for (let x = 0; x < maxLeft; x++) {
+      let blankCount = 0;
+      for (let y = 0; y < sh; y++) {
+        if (isBlank(x, y)) blankCount++;
+      }
+      if (blankCount / sh >= 0.95) left = x + 1;
+      else break;
+    }
+
+    // Scan right margin (up to 30% of width)
+    let right = sw;
+    const maxRight = Math.floor(sw * 0.7);
+    for (let x = sw - 1; x >= maxRight; x--) {
+      let blankCount = 0;
+      for (let y = 0; y < sh; y++) {
+        if (isBlank(x, y)) blankCount++;
+      }
+      if (blankCount / sh >= 0.95) right = x;
+      else break;
+    }
+
+    // If nothing trimmed, return original
+    if (top === 0 && bottom === sh && left === 0 && right === sw) {
+      if ('complete' in img) trimmedImageCache.set(img as HTMLImageElement, img);
+      return img;
+    }
+
+    // Map back to full-res coordinates
+    const realLeft = Math.round(left / scale);
+    const realTop = Math.round(top / scale);
+    const realRight = Math.min(nw, Math.round(right / scale));
+    const realBottom = Math.min(nh, Math.round(bottom / scale));
+    const cropW = Math.max(10, realRight - realLeft);
+    const cropH = Math.max(10, realBottom - realTop);
+
+    const trimmedCanvas = document.createElement('canvas');
+    trimmedCanvas.width = cropW;
+    trimmedCanvas.height = cropH;
+    const tCtx = trimmedCanvas.getContext('2d');
+    if (!tCtx) return img;
+
+    tCtx.drawImage(img, realLeft, realTop, cropW, cropH, 0, 0, cropW, cropH);
+
+    if ('complete' in img) trimmedImageCache.set(img as HTMLImageElement, trimmedCanvas);
+    return trimmedCanvas;
+  } catch {
+    return img;
+  }
+}
+
+// Draw image covering box while maintaining aspect ratio (object-fit: cover) with zoom and position offsets
 function drawImageProp(
   ctx: CanvasRenderingContext2D,
-  img: HTMLImageElement,
+  img: HTMLImageElement | HTMLCanvasElement,
   x: number,
   y: number,
   w: number,
-  h: number
+  h: number,
+  zoom: number = 1.0,
+  offsetX: number = 0,
+  offsetY: number = 0
 ) {
-  const nw = img.naturalWidth || img.width;
-  const nh = img.naturalHeight || img.height;
+  const source = trimImageBorders(img);
+  const nw = 'naturalWidth' in source ? (source.naturalWidth || source.width) : source.width;
+  const nh = 'naturalHeight' in source ? (source.naturalHeight || source.height) : source.height;
+  if (!nw || !nh) return;
+
   const aspect = nw / nh;
   const targetAspect = w / h;
 
-  let sx = 0,
-    sy = 0,
-    sw = nw,
-    sh = nh;
+  let baseSw = nw;
+  let baseSh = nh;
+  let baseSx = 0;
+  let baseSy = 0;
 
   if (aspect > targetAspect) {
-    sw = nh * targetAspect;
-    sx = (nw - sw) / 2;
+    // Image is wider than target frame: crop width, center horizontally
+    baseSw = nh * targetAspect;
+    baseSx = (nw - baseSw) / 2;
   } else {
-    sh = nw / targetAspect;
-    sy = (nh - sh) / 2;
+    // Image is taller than target frame: crop height
+    // Biasing slightly towards the top (0.35) keeps heads/faces nicely centered without cutting hair
+    baseSh = nw / targetAspect;
+    baseSy = (nh - baseSh) * 0.35;
   }
 
-  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+  // Safe zoom clamp: between 0.5 and 3.0
+  const z = Math.max(0.5, Math.min(3.0, zoom || 1.0));
+  const sw = baseSw / z;
+  const sh = baseSh / z;
+
+  // Center with user offsets (-50% to +50% range)
+  const cx = baseSx + baseSw / 2 - ((offsetX || 0) / 100) * baseSw;
+  const cy = baseSy + baseSh / 2 - ((offsetY || 0) / 100) * baseSh;
+
+  const sx = cx - sw / 2;
+  const sy = cy - sh / 2;
+
+  ctx.drawImage(source, sx, sy, sw, sh, x, y, w, h);
 }
 
 // Export single person image as Blob (PNG or JPEG)
