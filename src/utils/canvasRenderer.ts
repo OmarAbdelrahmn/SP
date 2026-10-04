@@ -127,6 +127,10 @@ export async function renderTemplateToCanvas(
   if (typeof document !== 'undefined' && 'fonts' in document) {
     try {
       await Promise.all([
+        document.fonts.load('400 14px "Frutiger LT Arabic"'),
+        document.fonts.load('600 14px "Frutiger LT Arabic"'),
+        document.fonts.load('700 14px "Frutiger LT Arabic"'),
+        document.fonts.load('800 14px "Frutiger LT Arabic"'),
         document.fonts.load('400 14px "Simplified Arabic"'),
         document.fonts.load('700 14px "Simplified Arabic"'),
         document.fonts.load('400 14px "Arial"'),
@@ -193,15 +197,19 @@ export async function renderTemplateToCanvas(
         }
       }
 
-      // Set proper text direction: RTL for Arabic / right-aligned, LTR for English / left-aligned
+      // Text direction is decided by the CONTENT, not the alignment: Latin values placed in a
+      // right-aligned (Arabic) column such as blood type "A+" must stay LTR, otherwise the
+      // bidi algorithm moves the neutral "+" to the front and renders "+A".
+      // (textAlign 'left'/'right' are absolute in canvas, so alignment is unaffected.)
       const isArabic = /[\u0600-\u06FF]/.test(text);
-      ctx.direction = (field.textAlign === 'right' || isArabic) ? 'rtl' : 'ltr';
+      const hasLatin = /[A-Za-z]/.test(text);
+      ctx.direction = isArabic || (field.textAlign === 'right' && !hasLatin) ? 'rtl' : 'ltr';
 
       // Font stack tailored to field language
       const isEnglish = !isArabic && /[a-zA-Z]/.test(text);
       const fontStack = isEnglish
         ? `"${field.fontFamily}", "Arial", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif`
-        : `"${field.fontFamily}", "Simplified Arabic", "Arial", "Tajawal", "Almarai", "Cairo", "Segoe UI", Tahoma, sans-serif`;
+        : `"${field.fontFamily}", "Frutiger LT Arabic", "Simplified Arabic", "Arial", "Tajawal", "Almarai", "Cairo", "Segoe UI", Tahoma, sans-serif`;
 
       ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px ${fontStack}`;
 

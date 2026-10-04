@@ -22,11 +22,11 @@ const cardText = (
   x,
   y,
   width: 30,
-  fontFamily: 'Simplified Arabic',
-  fontSize: 18.5,
+  fontFamily: 'Frutiger LT Arabic',
+  fontSize: 19.5,
   fontWeight: '700',
   fontStyle: 'normal',
-  color: '#1a1a1a',
+  color: '#111111',
   textAlign: 'right',
   textTransform: 'none',
   letterSpacing: 0,
@@ -61,30 +61,31 @@ const cardPhoto = (id: string): TemplateField => ({
   zIndex: 1,
 });
 
-// Shared name block (Arabic name on top in Simplified Arabic Bold, English name under it in Arial Bold)
+// Shared name block: Arabic name in Frutiger LT Arabic Black/Bold (wide and bold),
+// English name in Arial Regular with refined size and contrast so it is not overly bold.
 const NAME_AR_STYLE: Partial<TemplateField> = {
   width: 60,
-  fontFamily: 'Simplified Arabic',
-  fontSize: 31.0,
-  fontWeight: '700',
-  color: '#141414',
+  fontFamily: 'Frutiger LT Arabic',
+  fontSize: 32.0,
+  fontWeight: '800',
+  color: '#0f0f0f',
 };
 const NAME_EN_STYLE: Partial<TemplateField> = {
   width: 62,
   fontFamily: 'Arial',
-  fontSize: 25.0,
-  fontWeight: '600',
-  color: '#141414',
+  fontSize: 24.5,
+  fontWeight: '400',
+  color: '#303030',
   textTransform: 'uppercase',
-  letterSpacing: 0.3,
+  letterSpacing: 0.35,
 };
 
 // Driving license columns: English values start right after the English labels,
 // Arabic values end right before the Arabic labels.
 const DL_EN_X = 47.10; // left edge
 const DL_AR_X = 83.21; // right edge
-const DL_EN: Partial<TemplateField> = { fontFamily: 'Arial', fontWeight: '600', fontSize: 20.0, textAlign: 'left' };
-const DL_AR_DIGITS: Partial<TemplateField> = { fontFamily: 'Simplified Arabic', fontSize: 22.0, fontWeight: '700' };
+const DL_EN: Partial<TemplateField> = { fontFamily: 'Arial', fontWeight: '400', fontSize: 18.5, color: '#303030', textAlign: 'left' };
+const DL_AR_DIGITS: Partial<TemplateField> = { fontFamily: 'Frutiger LT Arabic', fontSize: 22.0, fontWeight: '700', color: '#0f0f0f' };
 
 export const SAUDI_DRIVING_LICENSE_TEMPLATE: Template = {
   id: 'saudi-driving-license',
@@ -102,11 +103,11 @@ export const SAUDI_DRIVING_LICENSE_TEMPLATE: Template = {
     cardText('dl-name-en', 'الاسم بالإنجليزية (English Name)', 'nameEn', 94.54, 34.80, 3, NAME_EN_STYLE),
 
     // Row 1: ID Number
-    cardText('dl-id-en', 'ID Number (EN)', 'idNumberEn', DL_EN_X, 42.72, 4, { ...DL_EN, fontSize: 20.0 }),
+    cardText('dl-id-en', 'ID Number (EN)', 'idNumberEn', DL_EN_X, 42.72, 4, { ...DL_EN, fontSize: 19.0 }),
     cardText('dl-id-ar', 'رقم الهوية (AR)', 'idNumberAr', DL_AR_X, 42.72, 5, DL_AR_DIGITS),
 
     // Row 2: License Type
-    cardText('dl-lictype-en', 'License Type (EN)', 'licenseTypeEn', 48.42, 51.37, 6, { ...DL_EN, fontSize: 18.0, width: 32 }),
+    cardText('dl-lictype-en', 'License Type (EN)', 'licenseTypeEn', 48.42, 51.37, 6, { ...DL_EN, fontSize: 17.5, width: 32 }),
     cardText('dl-lictype-ar', 'نوع الرخصة (AR)', 'licenseTypeAr', 83.38, 51.37, 7, { fontSize: 21.0, fontWeight: '700' }),
 
     // Row 3: Issue Date
@@ -118,19 +119,20 @@ export const SAUDI_DRIVING_LICENSE_TEMPLATE: Template = {
     cardText('dl-dob-ar', 'تاريخ الميلاد (AR)', 'dobAr', 82.88, 67.85, 11, DL_AR_DIGITS),
 
     // Row 5: Nationality
-    cardText('dl-nation-en', 'Nationality (EN)', 'nationalityEn', DL_EN_X, 76.78, 12, { ...DL_EN, fontSize: 20.0 }),
-    cardText('dl-nation-ar', 'الجنسية (AR)', 'nationalityAr', 83.38, 76.78, 13, { fontSize: 20.0, fontWeight: '700' }),
+    cardText('dl-nation-en', 'Nationality (EN)', 'nationalityEn', DL_EN_X, 76.78, 12, { ...DL_EN, fontSize: 19.0 }),
+    cardText('dl-nation-ar', 'الجنسية (AR)', 'nationalityAr', 83.38, 76.78, 13, { fontSize: 20.5, fontWeight: '700' }),
 
     // Row 6: Expiry Date
     cardText('dl-exp-en', 'Expiry Date (EN)', 'expiryDateEn', DL_EN_X, 84.62, 14, DL_EN),
     cardText('dl-exp-ar', 'تاريخ الانتهاء (AR)', 'expiryDateAr', 83.05, 84.62, 15, DL_AR_DIGITS),
 
     // Row 7: Blood Type
-    cardText('dl-blood-en', 'Blood Type (EN)', 'bloodType', 46.95, 90.83, 16, { ...DL_EN, fontSize: 20.0, width: 18 }),
+    cardText('dl-blood-en', 'Blood Type (EN)', 'bloodType', 46.95, 90.83, 16, { ...DL_EN, fontSize: 19.5, fontWeight: '700', color: '#0f0f0f', width: 18 }),
     cardText('dl-blood-ar', 'فصيلة الدم (AR)', 'bloodType', 83.38, 90.83, 17, {
       fontFamily: 'Arial',
-      fontWeight: '600',
-      fontSize: 20.0,
+      fontWeight: '700',
+      fontSize: 19.5,
+      color: '#0f0f0f',
       width: 18,
     }),
   ],
