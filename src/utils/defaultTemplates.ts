@@ -86,7 +86,9 @@ const NAME_EN_STYLE: Partial<TemplateField> = {
 const DL_EN_X = 47.10; // left edge
 const DL_AR_X = 83.21; // right edge
 const DL_EN: Partial<TemplateField> = { fontFamily: 'Arial', fontWeight: '400', fontSize: 18.5, color: '#303030', textAlign: 'left' };
-const DL_AR_DIGITS: Partial<TemplateField> = { fontFamily: 'Frutiger LT Arabic', fontSize: 22.0, fontWeight: '700', color: '#0f0f0f' };
+// Simplified Arabic is used for numeric fields because its Eastern Arabic numeral glyphs
+// (especially ٠ zero) exactly match what appears on the official Saudi Iqama and driving license.
+const DL_AR_DIGITS: Partial<TemplateField> = { fontFamily: 'Simplified Arabic', fontSize: 22.0, fontWeight: '700', color: '#0f0f0f' };
 
 export const SAUDI_DRIVING_LICENSE_TEMPLATE: Template = {
   id: 'saudi-driving-license',
@@ -155,16 +157,17 @@ export const SAUDI_MUQEEM_ID_TEMPLATE: Template = {
     cardText('mq-name-en', 'الاسم بالإنجليزية (English Name)', 'nameEn', 94.54, 35.10, 3, NAME_EN_STYLE),
 
     // Middle column
-    cardText('mq-expiry', 'تاريخ الانتهاء (Expiry Date)', 'expiryDateAr', 48.42, 45.42, 4, { fontSize: 22.5, fontWeight: '700', width: 25 }),
+    // Expiry date is numeric → Simplified Arabic for correct ٠ glyph
+    cardText('mq-expiry', 'تاريخ الانتهاء (Expiry Date)', 'expiryDateAr', 48.42, 45.42, 4, { fontFamily: 'Simplified Arabic', fontSize: 22.5, fontWeight: '700', width: 25 }),
     cardText('mq-pob', 'مكان الميلاد (Place of Birth)', 'pobAr', 48.58, 51.90, 5, { fontSize: 20.0, fontWeight: '700', width: 25 }),
     cardText('mq-rel', 'الديانة (Religion)', 'religionAr', 48.58, 58.48, 6, { fontSize: 20.0, fontWeight: '700', width: 25 }),
 
-    // Right column
-    cardText('mq-id', 'رقم الهوية (ID Number)', 'idNumberAr', 83.54, 45.42, 7, { fontSize: 22.5, fontWeight: '700' }),
-    cardText('mq-dob', 'تاريخ الميلاد (Date of Birth)', 'dobAr', 83.21, 51.90, 8, { fontSize: 22.5, fontWeight: '700' }),
+    // Right column — numeric fields use Simplified Arabic for correct Eastern Arabic numerals
+    cardText('mq-id', 'رقم الهوية (ID Number)', 'idNumberAr', 83.54, 45.42, 7, { fontFamily: 'Simplified Arabic', fontSize: 22.5, fontWeight: '700' }),
+    cardText('mq-dob', 'تاريخ الميلاد (Date of Birth)', 'dobAr', 83.21, 51.90, 8, { fontFamily: 'Simplified Arabic', fontSize: 22.5, fontWeight: '700' }),
     cardText('mq-nation', 'الجنسية (Nationality)', 'nationalityAr', 83.38, 58.48, 9, { fontSize: 20.0, fontWeight: '700', width: 25 }),
     cardText('mq-job', 'المهنة (Profession)', 'professionAr', 83.54, 65.22, 10, { fontSize: 18.5, fontWeight: '700', width: 40 }),
-    cardText('mq-empid', 'هوية صاحب العمل (Employer ID)', 'employerIdAr', 77.30, 71.11, 11, { fontSize: 22.5, fontWeight: '700' }),
+    cardText('mq-empid', 'هوية صاحب العمل (Employer ID)', 'employerIdAr', 77.30, 71.11, 11, { fontFamily: 'Simplified Arabic', fontSize: 22.5, fontWeight: '700' }),
     cardText('mq-issueplace', 'مكان الإصدار (Place of Issue)', 'issuePlaceAr', 82.72, 78.37, 12, { fontSize: 19.0, fontWeight: '700', width: 45 }),
     cardText('mq-workplace', 'مكان العمل (Place of Work)', 'workPlaceAr', 82.88, 84.60, 13, { fontSize: 20.0, fontWeight: '700', width: 35 }),
     cardText('mq-empname', 'اسم صاحب العمل (Employer Name)', 'employerNameAr', 77.80, 91.18, 14, { fontSize: 19.5, fontWeight: '700', width: 45 }),
