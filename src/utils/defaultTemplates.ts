@@ -61,14 +61,14 @@ const cardPhoto = (id: string): TemplateField => ({
   zIndex: 1,
 });
 
-// Shared name block: Arabic name in Frutiger LT Arabic Black/Bold (wide and bold),
+// Shared name block: Arabic name in Frutiger LT Arabic 65 Bold,
 // English name in Arial Regular with refined size and contrast so it is not overly bold.
 const NAME_AR_STYLE: Partial<TemplateField> = {
   width: 60,
   fontFamily: 'Frutiger LT Arabic',
-  fontSize: 32.0,
-  fontWeight: '800',
-  color: '#0f0f0f',
+  fontSize: 32.5,
+  fontWeight: '700',
+  color: '#141414',
 };
 const NAME_EN_STYLE: Partial<TemplateField> = {
   width: 62,
