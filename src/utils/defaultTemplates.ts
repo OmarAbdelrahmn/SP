@@ -74,8 +74,8 @@ const NAME_EN_STYLE: Partial<TemplateField> = {
   width: 62,
   fontFamily: 'Arial',
   fontSize: 24.5,
-  fontWeight: '400',
-  color: '#303030',
+  fontWeight: '700',
+  color: '#111111',
   textAlign: 'right',
   textTransform: 'uppercase',
   letterSpacing: 0.35,
@@ -85,7 +85,7 @@ const NAME_EN_STYLE: Partial<TemplateField> = {
 // Arabic values end right before the Arabic labels.
 const DL_EN_X = 47.10; // left edge
 const DL_AR_X = 83.21; // right edge
-const DL_EN: Partial<TemplateField> = { fontFamily: 'Arial', fontWeight: '400', fontSize: 18.5, color: '#303030', textAlign: 'left' };
+const DL_EN: Partial<TemplateField> = { fontFamily: 'Arial', fontWeight: '700', fontSize: 18.5, color: '#111111', textAlign: 'left' };
 // Simplified Arabic is used for numeric fields because its Eastern Arabic numeral glyphs
 // (especially ٠ zero) exactly match what appears on the official Saudi Iqama and driving license.
 const DL_AR_DIGITS: Partial<TemplateField> = { fontFamily: 'Simplified Arabic', fontSize: 22.0, fontWeight: '700', color: '#0f0f0f' };

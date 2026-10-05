@@ -152,6 +152,7 @@ export async function renderTemplateToCanvas(
         document.fonts.load('600 14px "Simplified Arabic"'),
         document.fonts.load('700 14px "Simplified Arabic"'),
         document.fonts.load('400 14px "Arial"'),
+        document.fonts.load('600 14px "Arial"'),
         document.fonts.load('700 14px "Arial"'),
         document.fonts.load('400 14px "Tajawal"'),
         document.fonts.load('700 14px "Tajawal"'),
