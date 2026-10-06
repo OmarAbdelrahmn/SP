@@ -19,6 +19,8 @@ import {
   Check,
   ZoomIn,
   ZoomOut,
+  QrCode,
+  Truck,
 } from 'lucide-react';
 
 
@@ -167,6 +169,8 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
   const isDrivingLicense = template.id === 'saudi-driving-license';
   const isMuqeemId = template.id === 'saudi-muqeem-id';
   const isDriverCard = template.id === 'saudi-tga-driver-card';
+  const isOperationCard = template.id === 'saudi-tga-operation-card';
+  const hasPhoto = template.fields.some((f) => f.type === 'image');
   const custom = activePerson.customFields || {};
 
   return (
@@ -260,6 +264,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
         <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {/* 1. Photo Section (الصورة الشخصية في المربع الأبيض) */}
+            {hasPhoto && (
             <div
               style={{
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -501,6 +506,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                 </div>
               </div>
             </div>
+            )}
 
             {/* 2. Specific Template Fields */}
             {isDrivingLicense ? (
@@ -1104,6 +1110,318 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       value={custom.companyAr || 'شركة غضى التجارية'}
                       onChange={(e) => handleCustomFieldChange('companyAr', e.target.value)}
                     />
+                  </div>
+                </div>
+              </div>
+            ) : isOperationCard ? (
+              /* بطاقة تشغيل (Saudi TGA Operation Card) */
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div
+                  style={{
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    color: '#f43f5e',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <Truck size={16} />
+                  <span>بيانات بطاقة التشغيل (الهيئة العامة للنقل - نقل)</span>
+                </div>
+
+                {/* Section 1: بيانات المنشأة (Organization Info) */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Building2 size={14} />
+                    <span>بيانات المنشأة (Organization Info)</span>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                      رقم هوية المنشأة (ID Number) *
+                    </label>
+                    <input
+                      type="text"
+                      className="input"
+                      value={custom.moiNumber || '7037427601'}
+                      onChange={(e) => handleCustomFieldChange('moiNumber', e.target.value)}
+                      placeholder="7037427601"
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        اسم المنشأة بالعربية *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.companyAr || 'شركة غضى لتأجير السيارات'}
+                        onChange={(e) => handleCustomFieldChange('companyAr', e.target.value)}
+                        placeholder="شركة غضى لتأجير السيارات"
+                        style={{ fontWeight: 700 }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        اسم المنشأة بالإنجليزية (Name) *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.companyEn || 'Ghada Company Cars Rental'}
+                        onChange={(e) => handleCustomFieldChange('companyEn', e.target.value)}
+                        placeholder="Ghada Company Cars Rental"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 2: بيانات بطاقة التشغيل (Operation Card Info) */}
+                <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <CreditCard size={14} />
+                    <span>بيانات بطاقة التشغيل (Operation Card Info)</span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        رقم البطاقة (Card Number) *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.operationCardNo || activePerson.code || '38-00075448'}
+                        onChange={(e) => {
+                          handleCustomFieldChange('operationCardNo', e.target.value);
+                          onUpdatePerson(activePerson.id, { code: e.target.value });
+                        }}
+                        placeholder="38-00075448"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        تاريخ تجديد البطاقة (Renew Date)
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.operationCardRenewDate || 'null'}
+                        onChange={(e) => handleCustomFieldChange('operationCardRenewDate', e.target.value)}
+                        placeholder="null"
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        تاريخ إصدار البطاقة (Issue Date) *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.operationCardIssueDate || activePerson.date || '2026-04-27'}
+                        onChange={(e) => {
+                          handleCustomFieldChange('operationCardIssueDate', e.target.value);
+                          onUpdatePerson(activePerson.id, { date: e.target.value });
+                        }}
+                        placeholder="2026-04-27"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        تاريخ انتهاء البطاقة (Expiry Date) *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.operationCardExpiryDate || custom.expiryDate || '2027-04-29'}
+                        onChange={(e) => handleCustomFieldChange('operationCardExpiryDate', e.target.value)}
+                        placeholder="2027-04-29"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 3: بيانات المركبة (Vehicle Info) */}
+                <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#10b981', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Truck size={14} />
+                    <span>بيانات المركبة (Vehicle Info)</span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        الماركة (Maker) *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.vehicleMaker || 'سوزوكي'}
+                        onChange={(e) => handleCustomFieldChange('vehicleMaker', e.target.value)}
+                        placeholder="سوزوكي"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        الطراز (Model) *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.vehicleModel || 'ديز اير'}
+                        onChange={(e) => handleCustomFieldChange('vehicleModel', e.target.value)}
+                        placeholder="ديز اير"
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        رقم اللوحة (Plate Number) *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.plateNumber || '8781 أ أ ر'}
+                        onChange={(e) => handleCustomFieldChange('plateNumber', e.target.value)}
+                        placeholder="8781 أ أ ر"
+                        style={{ fontWeight: 700 }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        لون المركبة (Color)
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.vehicleColor || 'فضي'}
+                        onChange={(e) => handleCustomFieldChange('vehicleColor', e.target.value)}
+                        placeholder="فضي"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        سنة الصنع (Model Year)
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.vehicleYear || '2024'}
+                        onChange={(e) => handleCustomFieldChange('vehicleYear', e.target.value)}
+                        placeholder="2024"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 4: بيانات الترخيص (License Info) */}
+                <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <ShieldCheck size={14} />
+                    <span>بيانات الترخيص (License Info)</span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        رقم الترخيص (License Number) *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.licenseNumber || '38/00021153'}
+                        onChange={(e) => handleCustomFieldChange('licenseNumber', e.target.value)}
+                        placeholder="38/00021153"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        مدينة الترخيص بالعربية *
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.cityAr || 'تبوك'}
+                        onChange={(e) => handleCustomFieldChange('cityAr', e.target.value)}
+                        placeholder="تبوك"
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        مدينة الترخيص (EN)
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.cityEn || 'Tabuk'}
+                        onChange={(e) => handleCustomFieldChange('cityEn', e.target.value)}
+                        placeholder="Tabuk"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        تاريخ إصدار الترخيص
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.licenseIssueDate || '2025-12-08'}
+                        onChange={(e) => handleCustomFieldChange('licenseIssueDate', e.target.value)}
+                        placeholder="2025-12-08"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        تاريخ انتهاء الترخيص
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.licenseExpiryDate || '2028-12-08'}
+                        onChange={(e) => handleCustomFieldChange('licenseExpiryDate', e.target.value)}
+                        placeholder="2028-12-08"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 5: رمز الاستجابة السريعة (QR Code) */}
+                <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#a855f7', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <QrCode size={14} />
+                    <span>رمز الاستجابة السريعة (Dynamic QR Code)</span>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                      رابط التحقق في بوابة نقل (Naql Verification URL)
+                    </label>
+                    <input
+                      type="text"
+                      className="input"
+                      dir="ltr"
+                      value={
+                        custom.operationCardQr ||
+                        `https://naql.logisti.sa/validate-operation-card?token=${custom.token || '12aeed0c-87b8-4adc-8147-49b3d4d8901d'}`
+                      }
+                      onChange={(e) => handleCustomFieldChange('operationCardQr', e.target.value)}
+                      placeholder="https://naql.logisti.sa/validate-operation-card?token=..."
+                      style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}
+                    />
+                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                      يتم توليد الرمز تلقائياً وبأعلى دقة ومطابق لباركود الهيئة العامة للنقل أعلى يسار البطاقة.
+                    </div>
                   </div>
                 </div>
               </div>

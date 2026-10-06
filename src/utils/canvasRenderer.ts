@@ -83,9 +83,13 @@ export function resolveFieldValue(field: TemplateField, person: PersonRecord): s
   if (field.key === 'code') return person.code;
   if (field.key === 'company') return person.company;
   if (field.key === 'email') return person.email;
-  if (field.key === 'qr') {
+  if (field.key === 'qr' || field.key === 'operationCardQr') {
     // Return encoded verification URL or structured payload
-    return `https://verify.cert.io/v/${person.code}?id=${person.id}&name=${encodeURIComponent(person.name)}`;
+    return (
+      person.customFields?.operationCardQr ||
+      person.customFields?.qrUrl ||
+      `https://naql.logisti.sa/validate-operation-card?token=${person.customFields?.token || '12aeed0c-87b8-4adc-8147-49b3d4d8901d'}`
+    );
   }
   if (person.customFields && person.customFields[field.key]) {
     return person.customFields[field.key];
@@ -114,6 +118,24 @@ export function resolveFieldValue(field: TemplateField, person: PersonRecord): s
   if (field.key === 'issuePlaceAr') return person.customFields?.issuePlaceAr || 'موقع بوابة الوزارة الإلكترونية';
   if (field.key === 'workPlaceAr') return person.customFields?.cityAr ? `منطقة ${person.customFields.cityAr}` : 'منطقة تبوك';
   if (field.key === 'employerNameAr') return person.customFields?.companyAr || 'شركة غضى التجارية';
+
+  // Operation Card (بطاقة تشغيل) fallbacks
+  if (field.key === 'operationCardNo') return person.customFields?.operationCardNo || person.code || '38-00075448';
+  if (field.key === 'operationCardIssueDate') return person.customFields?.operationCardIssueDate || person.date || '2026-04-27';
+  if (field.key === 'operationCardExpiryDate') return person.customFields?.operationCardExpiryDate || person.customFields?.expiryDate || '2027-04-29';
+  if (field.key === 'operationCardRenewDate') return person.customFields?.operationCardRenewDate || 'null';
+  if (field.key === 'vehicleMaker') return person.customFields?.vehicleMaker || 'سوزوكي';
+  if (field.key === 'vehicleModel') return person.customFields?.vehicleModel || 'ديز اير';
+  if (field.key === 'plateNumber') return person.customFields?.plateNumber || '8781 أ أ ر';
+  if (field.key === 'vehicleColor') return person.customFields?.vehicleColor || 'فضي';
+  if (field.key === 'vehicleYear') return person.customFields?.vehicleYear || '2024';
+  if (field.key === 'companyEn') return person.customFields?.companyEn || 'Ghada Company Cars Rental';
+  if (field.key === 'moiNumber') return person.customFields?.moiNumber || '7037427601';
+  if (field.key === 'licenseNumber') return person.customFields?.licenseNumber || '38/00021153';
+  if (field.key === 'cityEn') return person.customFields?.cityEn || 'Tabuk';
+  if (field.key === 'cityAr') return person.customFields?.cityAr || 'تبوك';
+  if (field.key === 'licenseIssueDate') return person.customFields?.licenseIssueDate || '2025-12-08';
+  if (field.key === 'licenseExpiryDate') return person.customFields?.licenseExpiryDate || '2028-12-08';
 
   // If field has custom prefix and no data key value
   return field.prefix || '';
