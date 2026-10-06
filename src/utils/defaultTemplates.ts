@@ -67,14 +67,14 @@ const NAME_AR_STYLE: Partial<TemplateField> = {
   width: 60,
   fontFamily: 'Noto Naskh Arabic',
   fontSize: 32.5,
-  fontWeight: '600',
+  fontWeight: '700',
   color: '#141414',
 };
 const NAME_EN_STYLE: Partial<TemplateField> = {
   width: 62,
   fontFamily: 'Arial',
   fontSize: 24.5,
-  fontWeight: '700',
+  fontWeight: '600',
   color: '#111111',
   textAlign: 'right',
   textTransform: 'uppercase',
