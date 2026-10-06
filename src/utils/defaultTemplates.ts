@@ -716,7 +716,7 @@ export const SAUDI_DRIVER_CARD_TEMPLATE: Template = {
     {
       id: 'f-tga-comp-en',
       name: 'Company Name (EN)',
-      key: 'company',
+      key: 'companyEn',
       type: 'text',
       x: 25.42,
       y: 68.65,

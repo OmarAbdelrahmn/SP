@@ -81,7 +81,15 @@ export function resolveFieldValue(field: TemplateField, person: PersonRecord): s
   if (field.key === 'title') return person.title;
   if (field.key === 'date') return person.date;
   if (field.key === 'code') return person.code;
-  if (field.key === 'company') return person.company;
+  if (field.key === 'company') {
+    if (field.id === 'f-tga-comp-en' || field.name.includes('(EN)')) {
+      return (
+        person.customFields?.companyEn ||
+        (person.company && !/[\u0600-\u06FF]/.test(person.company) ? person.company : 'Ghada Company Commercial')
+      );
+    }
+    return person.company;
+  }
   if (field.key === 'email') return person.email;
   if (field.key === 'qr' || field.key === 'operationCardQr') {
     // Return encoded verification URL or structured payload

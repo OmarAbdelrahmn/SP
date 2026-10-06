@@ -1100,16 +1100,33 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     </div>
                   </div>
 
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                      اسم المنشأة بالعربية
-                    </label>
-                    <input
-                      type="text"
-                      className="input"
-                      value={custom.companyAr || 'شركة غضى التجارية'}
-                      onChange={(e) => handleCustomFieldChange('companyAr', e.target.value)}
-                    />
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        اسم المنشأة بالعربية
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.companyAr || 'شركة غضى التجارية'}
+                        onChange={(e) => handleCustomFieldChange('companyAr', e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        اسم المنشأة بالإنجليزية
+                      </label>
+                      <input
+                        type="text"
+                        className="input"
+                        value={custom.companyEn || (activePerson.company && !/[\u0600-\u06FF]/.test(activePerson.company) ? activePerson.company : 'Ghada Company Commercial')}
+                        onChange={(e) => {
+                          handleCustomFieldChange('companyEn', e.target.value);
+                          onUpdatePerson(activePerson.id, { company: e.target.value });
+                        }}
+                        placeholder="Ghada Company Commercial"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

@@ -109,6 +109,7 @@ export const INITIAL_PEOPLE: PersonRecord[] = [
       activityTypeAr: 'نشاط النقل الخفيف للبضائع',
       moiNumber: '7037427601',
       companyAr: 'شركة غضى التجارية',
+      companyEn: 'Ghada Company Commercial',
     },
   },
   {
@@ -157,6 +158,7 @@ export const INITIAL_PEOPLE: PersonRecord[] = [
       activityTypeAr: 'نشاط النقل الخفيف للبضائع',
       moiNumber: '7011928472',
       companyAr: 'شركة الرياض للنقل اللوجستي',
+      companyEn: 'Riyadh Logistics Transport Co',
     },
   },
 ];

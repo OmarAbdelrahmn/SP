@@ -80,6 +80,7 @@ export function parseCsvText(csvContent: string): ParsedCsvResult {
     if (actArIdx >= 0 && cols[actArIdx]) customFields['activityTypeAr'] = cols[actArIdx];
     if (moiIdx >= 0 && cols[moiIdx]) customFields['moiNumber'] = cols[moiIdx];
     if (compArIdx >= 0 && cols[compArIdx]) customFields['companyAr'] = cols[compArIdx];
+    if (compEnIdx >= 0 && cols[compEnIdx]) customFields['companyEn'] = cols[compEnIdx];
 
     // Collect any other remaining columns as custom fields
     headers.forEach((h, hIdx) => {
