@@ -773,10 +773,10 @@ const opText = (
   y,
   width: 25,
   fontFamily: 'Almarai',
-  fontSize: 10.5,
-  fontWeight: '400',
+  fontSize: 19.0,
+  fontWeight: '600',
   fontStyle: 'normal',
-  color: '#33373b',
+  color: '#293d49',
   textAlign: x > 50 ? 'right' : 'left',
   textTransform: 'none',
   letterSpacing: 0,
@@ -820,68 +820,68 @@ export const SAUDI_OPERATION_CARD_TEMPLATE: Template = {
     },
 
     // SECTION 1: Organization Info / بيانات المنشأة
-    // Row 1: ID Number / رقم الهوية (y: 24.45%)
-    opText('f-op-org-id-en', 'Organization ID (EN)', 'moiNumber', 25.5, 24.45, 2),
-    opText('f-op-org-id-ar', 'رقم هوية المنشأة (AR)', 'moiNumber', 74.7, 24.45, 3),
+    // Row 1: ID Number / رقم الهوية (y: 25.00%)
+    opText('f-op-org-id-en', 'Organization ID (EN)', 'moiNumber', 25.5, 25.00, 2),
+    opText('f-op-org-id-ar', 'رقم هوية المنشأة (AR)', 'moiNumber', 74.7, 25.00, 3),
 
-    // Row 2: Name / الاسم (y: 27.03%)
-    opText('f-op-org-name-en', 'Organization Name (EN)', 'companyEn', 25.5, 27.03, 4, { width: 28 }),
-    opText('f-op-org-name-ar', 'اسم المنشأة (AR)', 'companyAr', 74.7, 27.03, 5, { width: 28 }),
+    // Row 2: Name / الاسم (y: 27.60%)
+    opText('f-op-org-name-en', 'Organization Name (EN)', 'companyEn', 25.5, 27.60, 4, { width: 32, fontSize: 18.0 }),
+    opText('f-op-org-name-ar', 'اسم المنشأة (AR)', 'companyAr', 74.7, 27.60, 5, { width: 32, fontSize: 18.0 }),
 
     // SECTION 2: Operation Card Info / بيانات بطاقة التشغيل
-    // Row 1: Card Number / رقم البطاقة (y: 38.03%)
-    opText('f-op-cardno-en', 'Card Number (EN)', 'operationCardNo', 25.5, 38.03, 6),
-    opText('f-op-cardno-ar', 'رقم البطاقة (AR)', 'operationCardNo', 74.7, 38.03, 7),
+    // Row 1: Card Number / رقم البطاقة (y: 38.45%)
+    opText('f-op-cardno-en', 'Card Number (EN)', 'operationCardNo', 25.5, 38.45, 6),
+    opText('f-op-cardno-ar', 'رقم البطاقة (AR)', 'operationCardNo', 74.7, 38.45, 7),
 
-    // Row 2: Card Issue Date / تاريخ إصدار البطاقة (y: 40.67%)
-    opText('f-op-card-issue-en', 'Issue Date (EN)', 'operationCardIssueDate', 25.5, 40.67, 8),
-    opText('f-op-card-issue-ar', 'تاريخ إصدار البطاقة (AR)', 'operationCardIssueDate', 74.7, 40.67, 9),
+    // Row 2: Card Issue Date / تاريخ إصدار البطاقة (y: 41.25%)
+    opText('f-op-card-issue-en', 'Issue Date (EN)', 'operationCardIssueDate', 25.5, 41.25, 8),
+    opText('f-op-card-issue-ar', 'تاريخ إصدار البطاقة (AR)', 'operationCardIssueDate', 74.7, 41.25, 9),
 
-    // Row 3: Card Expiry Date / تاريخ انتهاء البطاقة (y: 43.17%)
-    opText('f-op-card-expiry-en', 'Expiry Date (EN)', 'operationCardExpiryDate', 25.5, 43.17, 10),
-    opText('f-op-card-expiry-ar', 'تاريخ انتهاء البطاقة (AR)', 'operationCardExpiryDate', 74.7, 43.17, 11),
+    // Row 3: Card Expiry Date / تاريخ انتهاء البطاقة (y: 43.75%)
+    opText('f-op-card-expiry-en', 'Expiry Date (EN)', 'operationCardExpiryDate', 25.5, 43.75, 10),
+    opText('f-op-card-expiry-ar', 'تاريخ انتهاء البطاقة (AR)', 'operationCardExpiryDate', 74.7, 43.75, 11),
 
-    // Row 4: Card Renew Date / تاريخ تجديد البطاقة (y: 45.66%)
-    opText('f-op-card-renew-en', 'Renew Date (EN)', 'operationCardRenewDate', 25.5, 45.66, 12),
-    opText('f-op-card-renew-ar', 'تاريخ تجديد البطاقة (AR)', 'operationCardRenewDate', 74.7, 45.66, 13),
+    // Row 4: Card Renew Date / تاريخ تجديد البطاقة (y: 46.20%)
+    opText('f-op-card-renew-en', 'Renew Date (EN)', 'operationCardRenewDate', 25.5, 46.20, 12),
+    opText('f-op-card-renew-ar', 'تاريخ تجديد البطاقة (AR)', 'operationCardRenewDate', 74.7, 46.20, 13),
 
     // SECTION 3: Vehicle Info / بيانات المركبة
-    // Row 1: Maker / الماركة (y: 56.93%)
-    opText('f-op-veh-maker-en', 'Maker (Left)', 'vehicleMaker', 25.5, 56.93, 14),
-    opText('f-op-veh-maker-ar', 'الماركة (Right)', 'vehicleMaker', 74.7, 56.93, 15),
+    // Row 1: Maker / الماركة (y: 57.65%)
+    opText('f-op-veh-maker-en', 'Maker (Left)', 'vehicleMaker', 25.5, 57.65, 14),
+    opText('f-op-veh-maker-ar', 'الماركة (Right)', 'vehicleMaker', 74.7, 57.65, 15),
 
-    // Row 2: Model / الطراز (y: 59.53%)
-    opText('f-op-veh-model-en', 'Model (Left)', 'vehicleModel', 25.5, 59.53, 16),
-    opText('f-op-veh-model-ar', 'الطراز (Right)', 'vehicleModel', 74.7, 59.53, 17),
+    // Row 2: Model / الطراز (y: 60.15%)
+    opText('f-op-veh-model-en', 'Model (Left)', 'vehicleModel', 25.5, 60.15, 16),
+    opText('f-op-veh-model-ar', 'الطراز (Right)', 'vehicleModel', 74.7, 60.15, 17),
 
-    // Row 3: Plate Number / رقم اللوحة (y: 61.85%)
-    opText('f-op-veh-plate-en', 'Plate Number (Left)', 'plateNumber', 25.5, 61.85, 18),
-    opText('f-op-veh-plate-ar', 'رقم اللوحة (Right)', 'plateNumber', 74.7, 61.85, 19),
+    // Row 3: Plate Number / رقم اللوحة (y: 62.30%)
+    opText('f-op-veh-plate-en', 'Plate Number (Left)', 'plateNumber', 25.5, 62.30, 18),
+    opText('f-op-veh-plate-ar', 'رقم اللوحة (Right)', 'plateNumber', 74.7, 62.30, 19),
 
-    // Row 4: Color / لون المركبة (y: 64.68%)
-    opText('f-op-veh-color-en', 'Color (Left)', 'vehicleColor', 25.5, 64.68, 20),
-    opText('f-op-veh-color-ar', 'لون المركبة (Right)', 'vehicleColor', 74.7, 64.68, 21),
+    // Row 4: Color / لون المركبة (y: 65.35%)
+    opText('f-op-veh-color-en', 'Color (Left)', 'vehicleColor', 25.5, 65.35, 20),
+    opText('f-op-veh-color-ar', 'لون المركبة (Right)', 'vehicleColor', 74.7, 65.35, 21),
 
-    // Row 5: Model Year / سنة الصنع (y: 67.31%)
-    opText('f-op-veh-year-en', 'Model Year (Left)', 'vehicleYear', 25.5, 67.31, 22),
-    opText('f-op-veh-year-ar', 'سنة الصنع (Right)', 'vehicleYear', 74.7, 67.31, 23),
+    // Row 5: Model Year / سنة الصنع (y: 67.75%)
+    opText('f-op-veh-year-en', 'Model Year (Left)', 'vehicleYear', 25.5, 67.75, 22),
+    opText('f-op-veh-year-ar', 'سنة الصنع (Right)', 'vehicleYear', 74.7, 67.75, 23),
 
     // SECTION 4: License Info / بيانات الترخيص
-    // Row 1: License Number / رقم الترخيص (y: 78.08%)
-    opText('f-op-lic-no-en', 'License Number (Left)', 'licenseNumber', 25.5, 78.08, 24),
-    opText('f-op-lic-no-ar', 'رقم الترخيص (Right)', 'licenseNumber', 74.7, 78.08, 25),
+    // Row 1: License Number / رقم الترخيص (y: 78.60%)
+    opText('f-op-lic-no-en', 'License Number (Left)', 'licenseNumber', 25.5, 78.60, 24),
+    opText('f-op-lic-no-ar', 'رقم الترخيص (Right)', 'licenseNumber', 74.7, 78.60, 25),
 
-    // Row 2: License City / مدينة الترخيص (y: 80.57%)
-    opText('f-op-lic-city-en', 'License City (EN)', 'cityEn', 25.5, 80.57, 26),
-    opText('f-op-lic-city-ar', 'مدينة الترخيص (AR)', 'cityAr', 74.7, 80.57, 27),
+    // Row 2: License City / مدينة الترخيص (y: 81.20%)
+    opText('f-op-lic-city-en', 'License City (EN)', 'cityEn', 25.5, 81.20, 26),
+    opText('f-op-lic-city-ar', 'مدينة الترخيص (AR)', 'cityAr', 74.7, 81.20, 27),
 
-    // Row 3: Issue Date / تاريخ إصدار الترخيص (y: 83.07%)
-    opText('f-op-lic-issue-en', 'License Issue Date (Left)', 'licenseIssueDate', 25.5, 83.07, 28),
-    opText('f-op-lic-issue-ar', 'تاريخ إصدار الترخيص (Right)', 'licenseIssueDate', 74.7, 83.07, 29),
+    // Row 3: Issue Date / تاريخ إصدار الترخيص (y: 83.65%)
+    opText('f-op-lic-issue-en', 'License Issue Date (Left)', 'licenseIssueDate', 25.5, 83.65, 28),
+    opText('f-op-lic-issue-ar', 'تاريخ إصدار الترخيص (Right)', 'licenseIssueDate', 74.7, 83.65, 29),
 
-    // Row 4: Expiry Date / تاريخ انتهاء الترخيص (y: 85.56%)
-    opText('f-op-lic-exp-en', 'License Expiry Date (Left)', 'licenseExpiryDate', 25.5, 85.56, 30),
-    opText('f-op-lic-exp-ar', 'تاريخ انتهاء الترخيص (Right)', 'licenseExpiryDate', 74.7, 85.56, 31),
+    // Row 4: Expiry Date / تاريخ انتهاء الترخيص (y: 86.15%)
+    opText('f-op-lic-exp-en', 'License Expiry Date (Left)', 'licenseExpiryDate', 25.5, 86.15, 30),
+    opText('f-op-lic-exp-ar', 'تاريخ انتهاء الترخيص (Right)', 'licenseExpiryDate', 74.7, 86.15, 31),
   ],
 };
 
