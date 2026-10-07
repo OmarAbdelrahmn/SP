@@ -61,11 +61,11 @@ const cardPhoto = (id: string): TemplateField => ({
   zIndex: 1,
 });
 
-// Shared name block: Arabic name in Noto Naskh Arabic Bold (exact match for official Saudi cards),
+// Shared name block: Arabic name in Alyamama Bold (official Saudi driving license and muqeem cards),
 // English name in Arial Regular with refined size and contrast so it is not overly bold.
 const NAME_AR_STYLE: Partial<TemplateField> = {
   width: 60,
-  fontFamily: 'Noto Naskh Arabic',
+  fontFamily: 'Alyamama',
   fontSize: 32.5,
   fontWeight: '700',
   color: '#141414',

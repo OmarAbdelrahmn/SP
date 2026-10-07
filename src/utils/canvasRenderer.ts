@@ -174,6 +174,8 @@ export async function renderTemplateToCanvas(
   if (typeof document !== 'undefined' && 'fonts' in document) {
     try {
       await Promise.all([
+        document.fonts.load('400 14px "Alyamama"'),
+        document.fonts.load('700 14px "Alyamama"'),
         document.fonts.load('400 14px "Noto Naskh Arabic"'),
         document.fonts.load('700 14px "Noto Naskh Arabic"'),
         document.fonts.load('400 14px "Amiri"'),
@@ -264,7 +266,7 @@ export async function renderTemplateToCanvas(
       const isEnglish = !isArabic && /[a-zA-Z]/.test(text);
       const fontStack = isEnglish
         ? `"${field.fontFamily}", "Arial", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif`
-        : `"${field.fontFamily}", "Noto Naskh Arabic", "Frutiger LT Arabic", "Simplified Arabic", "Arial", "Tajawal", "Almarai", "Cairo", "Segoe UI", Tahoma, sans-serif`;
+        : `"${field.fontFamily}", "Alyamama", "Noto Naskh Arabic", "Frutiger LT Arabic", "Simplified Arabic", "Arial", "Tajawal", "Almarai", "Cairo", "Segoe UI", Tahoma, sans-serif`;
 
       ctx.font = `${field.fontStyle} ${field.fontWeight} ${fontSize}px ${fontStack}`;
 

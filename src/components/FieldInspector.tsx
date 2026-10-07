@@ -31,6 +31,7 @@ interface FieldInspectorProps {
 }
 
 const FONT_OPTIONS = [
+  { label: 'اليمامة (Alyamama - خط رخص وهوية مقيم)', value: 'Alyamama' },
   { label: 'المراعي (Almarai - خط رسمي ومعتمد)', value: 'Almarai' },
   { label: 'تجوال (Tajawal - حديث وعصري)', value: 'Tajawal' },
   { label: 'Cairo (القاهرة - واضح وجريء)', value: 'Cairo' },
