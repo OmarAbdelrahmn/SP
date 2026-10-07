@@ -74,7 +74,7 @@ const NAME_EN_STYLE: Partial<TemplateField> = {
   width: 62,
   fontFamily: 'Arial',
   fontSize: 24.5,
-  fontWeight: '600',
+  fontWeight: '500',
   color: '#111111',
   textAlign: 'right',
   textTransform: 'uppercase',

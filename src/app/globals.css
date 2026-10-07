@@ -9,6 +9,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Alyamama';
   src: url('/fonts/Alyamama-Regular.ttf') format('truetype');
@@ -16,6 +17,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Alyamama';
   src: url('/fonts/Alyamama-Regular.ttf') format('truetype');
@@ -23,6 +25,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Alyamama';
   src: url('/fonts/Alyamama-Bold.ttf') format('truetype');
@@ -30,6 +33,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Alyamama';
   src: url('/fonts/Alyamama-Bold.ttf') format('truetype');
@@ -37,6 +41,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Alyamama';
   src: url('/fonts/Alyamama-Bold.ttf') format('truetype');
@@ -44,6 +49,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Alyamama';
   src: url('/fonts/Alyamama-Bold.ttf') format('truetype');
@@ -60,6 +66,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Tajawal';
   src: url('/fonts/Tajawal-Regular.ttf') format('truetype');
@@ -67,6 +74,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Tajawal';
   src: url('/fonts/Tajawal-Regular.ttf') format('truetype');
@@ -74,6 +82,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Tajawal';
   src: url('/fonts/Tajawal-Bold.ttf') format('truetype');
@@ -81,6 +90,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Tajawal';
   src: url('/fonts/Tajawal-Bold.ttf') format('truetype');
@@ -97,6 +107,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Almarai';
   src: url('/fonts/Almarai-Regular.ttf') format('truetype');
@@ -104,6 +115,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Almarai';
   src: url('/fonts/Almarai-Regular.ttf') format('truetype');
@@ -111,6 +123,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Almarai';
   src: url('/fonts/Almarai-Bold.ttf') format('truetype');
@@ -118,6 +131,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Almarai';
   src: url('/fonts/Almarai-Bold.ttf') format('truetype');
@@ -143,6 +157,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter-Regular.ttf') format('truetype');
@@ -150,6 +165,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter-SemiBold.ttf') format('truetype');
@@ -157,6 +173,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter-Bold.ttf') format('truetype');
@@ -164,6 +181,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 /* Frutiger LT Arabic (Official Saudi Card Font) */
 @font-face {
   font-family: 'Frutiger LT Arabic';
@@ -172,6 +190,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Frutiger LT Arabic';
   src: url('/fonts/FrutigerLTArabic55Roman.woff') format('woff');
@@ -179,6 +198,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Frutiger LT Arabic';
   src: url('/fonts/FrutigerLTArabic55Roman.woff') format('woff');
@@ -186,6 +206,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Frutiger LT Arabic';
   src: url('/fonts/FrutigerLTArabic65Bold.woff') format('woff');
@@ -193,6 +214,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Frutiger LT Arabic';
   src: url('/fonts/FrutigerLTArabic65Bold.woff') format('woff');
@@ -200,6 +222,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Frutiger LT Arabic';
   src: url('/fonts/frutigerltarabic75black.woff') format('woff');
@@ -207,6 +230,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Frutiger LT Arabic';
   src: url('/fonts/frutigerltarabic75black.woff') format('woff');
@@ -223,6 +247,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 /* Real Simplified Arabic Bold face (was previously mapped to the regular file, so "bold" rendered thin) */
 @font-face {
   font-family: 'Simplified Arabic';
@@ -231,6 +256,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Simplified Arabic';
   src: url('/fonts/Simplified-Arabic-Bold.ttf') format('truetype');
@@ -247,6 +273,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Arial';
   src: url('/fonts/Arial-Bold.ttf') format('truetype');
@@ -254,6 +281,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Arial';
   src: url('/fonts/Arial-Bold.ttf') format('truetype');
@@ -319,13 +347,16 @@ body {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-full);
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
 }
@@ -388,6 +419,7 @@ body {
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .btn-primary:hover {
   background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
@@ -398,6 +430,7 @@ body {
   color: #ffffff;
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
+
 .btn-success:hover {
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
 }
@@ -407,6 +440,7 @@ body {
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
 }
+
 .btn-secondary:hover {
   background: var(--bg-surface-hover);
   border-color: rgba(255, 255, 255, 0.15);
@@ -416,6 +450,7 @@ body {
   background: transparent;
   color: var(--text-secondary);
 }
+
 .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.06);
   color: var(--text-primary);
@@ -425,6 +460,7 @@ body {
   background: transparent;
   color: #f87171;
 }
+
 .btn-danger-ghost:hover {
   background: rgba(239, 68, 68, 0.12);
   color: #ef4444;
@@ -527,17 +563,20 @@ body {
   border: 2px solid #6366f1;
   border-radius: 2px;
 }
+
 .handle-e {
   right: -5px;
   top: 50%;
   transform: translateY(-50%);
   cursor: ew-resize;
 }
+
 .handle-se {
   right: -5px;
   bottom: -5px;
   cursor: nwse-resize;
 }
+
 .handle-s {
   bottom: -5px;
   left: 50%;
@@ -587,13 +626,25 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Tabs */
