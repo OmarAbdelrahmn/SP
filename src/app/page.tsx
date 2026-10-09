@@ -294,7 +294,18 @@ export default function Home() {
   };
 
   const handleUpdatePerson = (id: string, updates: Partial<PersonRecord>) => {
-    setPeople((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p)));
+    setPeople((prev) =>
+      prev.map((p) => {
+        if (p.id !== id) return p;
+        return {
+          ...p,
+          ...updates,
+          customFields: updates.customFields
+            ? { ...(p.customFields || {}), ...updates.customFields }
+            : p.customFields,
+        };
+      })
+    );
   };
 
   const handleDeletePerson = (id: string) => {

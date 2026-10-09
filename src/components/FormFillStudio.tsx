@@ -79,6 +79,19 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
     });
   };
 
+  const handleBatchChange = (
+    customUpdates: Record<string, string>,
+    personUpdates?: Partial<PersonRecord>
+  ) => {
+    onUpdatePerson(activePerson.id, {
+      ...personUpdates,
+      customFields: {
+        ...(activePerson.customFields || {}),
+        ...customUpdates,
+      },
+    });
+  };
+
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -536,10 +549,10 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       type="text"
                       className="input"
                       dir="rtl"
-                      value={custom.nameAr || activePerson.name}
+                      value={custom.nameAr !== undefined ? custom.nameAr : (activePerson.name || '')}
                       onChange={(e) => {
-                        handleCustomFieldChange('nameAr', e.target.value);
-                        onUpdatePerson(activePerson.id, { name: e.target.value });
+                        const val = e.target.value;
+                        handleBatchChange({ nameAr: val }, { name: val });
                       }}
                       placeholder="اسلام حماده فؤاد عبد الرحمن"
                       style={{ fontWeight: 700, fontFamily: 'Tajawal, sans-serif' }}
@@ -553,7 +566,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       type="text"
                       className="input"
                       dir="ltr"
-                      value={custom.nameEn || 'ESLAM HAMADA FOUAD ABDELRAHMAN'}
+                      value={custom.nameEn !== undefined ? custom.nameEn : ''}
                       onChange={(e) => handleCustomFieldChange('nameEn', e.target.value)}
                       placeholder="ESLAM HAMADA FOUAD ABDELRAHMAN"
                       style={{ fontFamily: 'Inter, sans-serif' }}
@@ -570,12 +583,17 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.idNumberEn || activePerson.code}
+                      value={custom.idNumberEn !== undefined ? custom.idNumberEn : (activePerson.code || '')}
                       onChange={(e) => {
                         const val = e.target.value;
-                        handleCustomFieldChange('idNumberEn', val);
-                        handleCustomFieldChange('idNumberAr', toArabicNumerals(val));
-                        onUpdatePerson(activePerson.id, { code: val });
+                        handleBatchChange(
+                          {
+                            idNumberEn: val,
+                            idNumberAr: toArabicNumerals(val),
+                            driverId: val,
+                          },
+                          { code: val }
+                        );
                       }}
                       placeholder="2579236403"
                     />
@@ -587,7 +605,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.idNumberAr || '٢٥٧٩٢٣٦٤٠٣'}
+                      value={custom.idNumberAr !== undefined ? custom.idNumberAr : ''}
                       onChange={(e) => handleCustomFieldChange('idNumberAr', e.target.value)}
                       placeholder="٢٥٧٩٢٣٦٤٠٣"
                     />
@@ -603,7 +621,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.licenseTypeAr || 'نقل خفيف'}
+                      value={custom.licenseTypeAr !== undefined ? custom.licenseTypeAr : ''}
                       onChange={(e) => handleCustomFieldChange('licenseTypeAr', e.target.value)}
                       placeholder="نقل خفيف"
                     />
@@ -615,7 +633,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.licenseTypeEn || 'Light Transport'}
+                      value={custom.licenseTypeEn !== undefined ? custom.licenseTypeEn : ''}
                       onChange={(e) => handleCustomFieldChange('licenseTypeEn', e.target.value)}
                       placeholder="Light Transport"
                     />
@@ -631,7 +649,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.issueDateAr || '٢٠٢٦/٠٤/٠٢'}
+                      value={custom.issueDateAr !== undefined ? custom.issueDateAr : ''}
                       onChange={(e) => handleCustomFieldChange('issueDateAr', e.target.value)}
                       placeholder="٢٠٢٦/٠٤/٠٢"
                     />
@@ -643,11 +661,10 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.issueDateEn || '02/04/2026'}
+                      value={custom.issueDateEn !== undefined ? custom.issueDateEn : (activePerson.date || '')}
                       onChange={(e) => {
                         const val = e.target.value;
-                        handleCustomFieldChange('issueDateEn', val);
-                        onUpdatePerson(activePerson.id, { date: val });
+                        handleBatchChange({ issueDateEn: val }, { date: val });
                       }}
                       placeholder="02/04/2026"
                     />
@@ -663,7 +680,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.dobAr || '١٩٩٩/١٢/٠١'}
+                      value={custom.dobAr !== undefined ? custom.dobAr : ''}
                       onChange={(e) => handleCustomFieldChange('dobAr', e.target.value)}
                       placeholder="١٩٩٩/١٢/٠١"
                     />
@@ -675,7 +692,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.dobEn || '01/12/1999'}
+                      value={custom.dobEn !== undefined ? custom.dobEn : ''}
                       onChange={(e) => handleCustomFieldChange('dobEn', e.target.value)}
                       placeholder="01/12/1999"
                     />
@@ -691,7 +708,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.nationalityAr || 'مصر'}
+                      value={custom.nationalityAr !== undefined ? custom.nationalityAr : ''}
                       onChange={(e) => handleCustomFieldChange('nationalityAr', e.target.value)}
                       placeholder="مصر"
                     />
@@ -703,7 +720,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.nationalityEn || 'Egypt'}
+                      value={custom.nationalityEn !== undefined ? custom.nationalityEn : ''}
                       onChange={(e) => handleCustomFieldChange('nationalityEn', e.target.value)}
                       placeholder="Egypt"
                     />
@@ -719,7 +736,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.expiryDateAr || '٢٠٣١/٠٢/٠٦'}
+                      value={custom.expiryDateAr !== undefined ? custom.expiryDateAr : ''}
                       onChange={(e) => handleCustomFieldChange('expiryDateAr', e.target.value)}
                       placeholder="٢٠٣١/٠٢/٠٦"
                     />
@@ -731,7 +748,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.expiryDateEn || '06/02/2031'}
+                      value={custom.expiryDateEn !== undefined ? custom.expiryDateEn : ''}
                       onChange={(e) => handleCustomFieldChange('expiryDateEn', e.target.value)}
                       placeholder="06/02/2031"
                     />
@@ -743,7 +760,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.bloodType || 'A+'}
+                      value={custom.bloodType !== undefined ? custom.bloodType : ''}
                       onChange={(e) => handleCustomFieldChange('bloodType', e.target.value)}
                       placeholder="A+"
                       style={{ textAlign: 'center', fontWeight: 700 }}
@@ -778,10 +795,10 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       type="text"
                       className="input"
                       dir="rtl"
-                      value={custom.nameAr || activePerson.name}
+                      value={custom.nameAr !== undefined ? custom.nameAr : (activePerson.name || '')}
                       onChange={(e) => {
-                        handleCustomFieldChange('nameAr', e.target.value);
-                        onUpdatePerson(activePerson.id, { name: e.target.value });
+                        const val = e.target.value;
+                        handleBatchChange({ nameAr: val }, { name: val });
                       }}
                       placeholder="اسلام حماده فؤاد عبد الرحمن"
                       style={{ fontWeight: 700, fontFamily: 'Tajawal, sans-serif' }}
@@ -795,7 +812,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       type="text"
                       className="input"
                       dir="ltr"
-                      value={custom.nameEn || 'ESLAM HAMADA FOUAD ABDELRAHMAN'}
+                      value={custom.nameEn !== undefined ? custom.nameEn : ''}
                       onChange={(e) => handleCustomFieldChange('nameEn', e.target.value)}
                       placeholder="ESLAM HAMADA FOUAD ABDELRAHMAN"
                       style={{ fontFamily: 'Inter, sans-serif' }}
@@ -812,8 +829,18 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.idNumberAr || '٢٥٧٩٢٣٦٤٠٣'}
-                      onChange={(e) => handleCustomFieldChange('idNumberAr', e.target.value)}
+                      value={custom.idNumberAr !== undefined ? custom.idNumberAr : ''}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        handleBatchChange(
+                          {
+                            idNumberAr: toArabicNumerals(val),
+                            idNumberEn: val,
+                            driverId: val,
+                          },
+                          { code: val }
+                        );
+                      }}
                       placeholder="٢٥٧٩٢٣٦٤٠٣"
                     />
                   </div>
@@ -824,7 +851,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.dobAr || '١٩٩٩/١٢/٠١'}
+                      value={custom.dobAr !== undefined ? custom.dobAr : ''}
                       onChange={(e) => handleCustomFieldChange('dobAr', e.target.value)}
                       placeholder="١٩٩٩/١٢/٠١"
                     />
@@ -840,7 +867,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.expiryDateAr || '٢٠٢٦/٠٩/٢١'}
+                      value={custom.expiryDateAr !== undefined ? custom.expiryDateAr : ''}
                       onChange={(e) => handleCustomFieldChange('expiryDateAr', e.target.value)}
                       placeholder="٢٠٢٦/٠٩/٢١"
                     />
@@ -852,7 +879,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.pobAr || 'مصر'}
+                      value={custom.pobAr !== undefined ? custom.pobAr : ''}
                       onChange={(e) => handleCustomFieldChange('pobAr', e.target.value)}
                       placeholder="مصر"
                     />
@@ -864,7 +891,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.religionAr || 'الاسلام'}
+                      value={custom.religionAr !== undefined ? custom.religionAr : ''}
                       onChange={(e) => handleCustomFieldChange('religionAr', e.target.value)}
                       placeholder="الاسلام"
                     />
@@ -880,7 +907,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.nationalityAr || 'مصر'}
+                      value={custom.nationalityAr !== undefined ? custom.nationalityAr : ''}
                       onChange={(e) => handleCustomFieldChange('nationalityAr', e.target.value)}
                       placeholder="مصر"
                     />
@@ -892,7 +919,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.professionAr || 'سائق شاحنة صغيرة'}
+                      value={custom.professionAr !== undefined ? custom.professionAr : ''}
                       onChange={(e) => handleCustomFieldChange('professionAr', e.target.value)}
                       placeholder="سائق شاحنة صغيرة"
                     />
@@ -908,7 +935,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.employerIdAr || '٧٠٣٧٤٢٧٦٠١'}
+                      value={custom.employerIdAr !== undefined ? custom.employerIdAr : ''}
                       onChange={(e) => handleCustomFieldChange('employerIdAr', e.target.value)}
                       placeholder="٧٠٣٧٤٢٧٦٠١"
                     />
@@ -920,7 +947,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.issuePlaceAr || 'موقع بوابة الوزارة الإلكترونية'}
+                      value={custom.issuePlaceAr !== undefined ? custom.issuePlaceAr : ''}
                       onChange={(e) => handleCustomFieldChange('issuePlaceAr', e.target.value)}
                       placeholder="موقع بوابة الوزارة الإلكترونية"
                     />
@@ -936,7 +963,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.workPlaceAr || 'منطقة تبوك'}
+                      value={custom.workPlaceAr !== undefined ? custom.workPlaceAr : ''}
                       onChange={(e) => handleCustomFieldChange('workPlaceAr', e.target.value)}
                       placeholder="منطقة تبوك"
                     />
@@ -948,7 +975,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                     <input
                       type="text"
                       className="input"
-                      value={custom.employerNameAr || 'شركة غضى التجارية'}
+                      value={custom.employerNameAr !== undefined ? custom.employerNameAr : ''}
                       onChange={(e) => handleCustomFieldChange('employerNameAr', e.target.value)}
                       placeholder="شركة غضى التجارية"
                     />
@@ -1119,10 +1146,10 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       <input
                         type="text"
                         className="input"
-                        value={custom.companyEn || (activePerson.company && !/[\u0600-\u06FF]/.test(activePerson.company) ? activePerson.company : 'Ghada Company Commercial')}
+                        value={custom.companyEn !== undefined ? custom.companyEn : (activePerson.company && !/[\u0600-\u06FF]/.test(activePerson.company) ? activePerson.company : '')}
                         onChange={(e) => {
-                          handleCustomFieldChange('companyEn', e.target.value);
-                          onUpdatePerson(activePerson.id, { company: e.target.value });
+                          const val = e.target.value;
+                          handleBatchChange({ companyEn: val }, { company: val });
                         }}
                         placeholder="Ghada Company Commercial"
                       />
@@ -1211,10 +1238,10 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       <input
                         type="text"
                         className="input"
-                        value={custom.operationCardNo || activePerson.code || '38-00075448'}
+                        value={custom.operationCardNo !== undefined ? custom.operationCardNo : (activePerson.code || '')}
                         onChange={(e) => {
-                          handleCustomFieldChange('operationCardNo', e.target.value);
-                          onUpdatePerson(activePerson.id, { code: e.target.value });
+                          const val = e.target.value;
+                          handleBatchChange({ operationCardNo: val }, { code: val });
                         }}
                         placeholder="38-00075448"
                       />
@@ -1226,7 +1253,7 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       <input
                         type="text"
                         className="input"
-                        value={custom.operationCardRenewDate || 'null'}
+                        value={custom.operationCardRenewDate !== undefined ? custom.operationCardRenewDate : ''}
                         onChange={(e) => handleCustomFieldChange('operationCardRenewDate', e.target.value)}
                         placeholder="null"
                       />
@@ -1241,10 +1268,10 @@ export const FormFillStudio: React.FC<FormFillStudioProps> = ({
                       <input
                         type="text"
                         className="input"
-                        value={custom.operationCardIssueDate || activePerson.date || '2026-04-27'}
+                        value={custom.operationCardIssueDate !== undefined ? custom.operationCardIssueDate : (activePerson.date || '')}
                         onChange={(e) => {
-                          handleCustomFieldChange('operationCardIssueDate', e.target.value);
-                          onUpdatePerson(activePerson.id, { date: e.target.value });
+                          const val = e.target.value;
+                          handleBatchChange({ operationCardIssueDate: val }, { date: val });
                         }}
                         placeholder="2026-04-27"
                       />
