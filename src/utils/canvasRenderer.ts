@@ -99,7 +99,7 @@ export function resolveFieldValue(field: TemplateField, person: PersonRecord): s
       `https://naql.logisti.sa/validate-operation-card?token=${person.customFields?.token || '12aeed0c-87b8-4adc-8147-49b3d4d8901d'}`
     );
   }
-  if (person.customFields && person.customFields[field.key]) {
+  if (person.customFields && person.customFields[field.key] !== undefined) {
     return person.customFields[field.key];
   }
 
